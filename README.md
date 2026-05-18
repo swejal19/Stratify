@@ -87,6 +87,12 @@ Overall Score = Σ (Goal Weightage% × Goal Score)
 3. Add environment variables in Vercel dashboard
 4. Deploy!
 
+## 🛡️ Security
+- Row Level Security (RLS) enabled on all tables
+- Role-aware dashboards for Admin, Manager, and Employee workflows
+- Environment variables used for sensitive configuration
+- No hardcoded credentials in source code
+
 ## 📁 Project Structure
 src/
   components/     — Reusable UI components
