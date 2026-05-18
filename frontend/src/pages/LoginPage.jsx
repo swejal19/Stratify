@@ -64,17 +64,29 @@ export const LoginPage = () => {
       setError(signInError.message);
       setLoading(false);
     } else {
-      // Fetch profile role and redirect immediately
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', data.user.id)
-        .single();
 
-      const role = profileData?.role;
-      if (role === 'admin') navigate('/admin');
-      else if (role === 'manager') navigate('/manager');
-      else navigate('/employee');
+      // Wait briefly for auth/session to settle
+      setTimeout(async () => {
+
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', data.user.id)
+          .single();
+
+        const role = profileData?.role;
+
+        if (role === 'admin') {
+          navigate('/admin');
+        } else if (role === 'manager') {
+          navigate('/manager');
+        } else {
+          navigate('/employee');
+        }
+
+        setLoading(false);
+
+      }, 500);
     }
   };
 
