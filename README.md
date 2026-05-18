@@ -21,13 +21,6 @@ quarterly check-ins and performance visibility.
 | Manager | Approve goals, conduct check-ins, push shared goals |
 | Admin | Manage cycles, users, view reports & audit logs |
 
-## 🔐 Demo Credentials
-| Role | Email | Password |
-|------|-------|----------|
-| Employee | employee@demo.com | Employee@123 |
-| Manager | manager@demo.com | Manager@123 |
-| Admin | admin@demo.com | Admin@123 |
-
 ## ✨ Features
 ### Phase 1 — Goal Creation & Approval
 - Employee goal sheet with weighted objectives
@@ -94,12 +87,6 @@ Overall Score = Σ (Goal Weightage% × Goal Score)
 3. Add environment variables in Vercel dashboard
 4. Deploy!
 
-## 🛡️ Security
-- Row Level Security (RLS) enabled on all tables
-- Role-based access control (RBAC)
-- Environment variables for all sensitive config
-- No hardcoded credentials in source code
-
 ## 📁 Project Structure
 src/
   components/     — Reusable UI components
@@ -109,11 +96,3 @@ src/
   utils/          — Score calculation utilities
   lib/            — Supabase client
 
-## 🏆 Built For
-AtomQuest Hackathon 1.0
-Problem Statement: In-House Goal Setting & Tracking Portal
-
-## 📞 Tech Stack
-React • Vite • Supabase • PostgreSQL • 
-Vercel • Stitch Design System • Recharts • 
-TanStack Query • React Router
