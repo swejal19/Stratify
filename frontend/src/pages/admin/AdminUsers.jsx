@@ -197,21 +197,21 @@ export const AdminUsers = () => {
       {/* Top Header & Filters */}
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-6">
         <div>
-          <h1 className="text-3xl font-display-md font-bold text-on-surface">User Management</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">Manage employee roles, departments, and overrides.</p>
+          <h1 className="text-3xl font-display-md font-bold text-slate-700">User Management</h1>
+          <p className="text-slate-700-variant font-body-md mt-1">Manage employee roles, departments, and overrides.</p>
         </div>
         <div className="flex gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
             <input 
               type="text" placeholder="Search users..."
               value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-surface-container border border-white/10 rounded-lg text-on-surface focus:border-primary"
+              className="w-full pl-10 pr-4 py-2 bg-surface-container border border-outline rounded-lg text-slate-700 focus:border-primary"
             />
           </div>
           <select 
             value={roleFilter} onChange={e => setRoleFilter(e.target.value)}
-            className="px-4 py-2 bg-surface-container border border-white/10 rounded-lg text-on-surface focus:border-primary"
+            className="px-4 py-2 bg-surface-container border border-outline rounded-lg text-slate-700 focus:border-primary"
           >
             <option value="all">All Roles</option>
             <option value="employee">Employee</option>
@@ -238,11 +238,11 @@ export const AdminUsers = () => {
       </div>
 
       {/* Data Table */}
-      <div className="bg-surface-container rounded-2xl border border-white/5 overflow-hidden shadow-lg">
+      <div className="bg-surface-container rounded-2xl border border-outline overflow-hidden shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-surface-container-lowest border-b border-white/5 text-xs text-outline font-bold uppercase tracking-wider">
+              <tr className="bg-surface-container-lowest border-b border-outline text-xs text-slate-400 font-bold uppercase tracking-wider">
                 <th className="px-6 py-4">Name & Email</th>
                 <th className="px-6 py-4">Role</th>
                 <th className="px-6 py-4">Department</th>
@@ -253,16 +253,16 @@ export const AdminUsers = () => {
             <tbody className="divide-y divide-white/5">
               {filteredProfiles?.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-12 text-center text-on-surface-variant">No users found matching your criteria.</td>
+                  <td colSpan="5" className="px-6 py-12 text-center text-slate-700-variant">No users found matching your criteria.</td>
                 </tr>
               ) : (
                 filteredProfiles?.map((user) => {
                   const managerName = profiles?.find(p => p.id === user.manager_id)?.full_name || '--';
                   return (
-                    <tr key={user.id} className="hover:bg-white/[0.02] transition-colors">
+                    <tr key={user.id} className="hover:hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="font-bold text-on-surface">{user.full_name}</div>
-                        <div className="text-xs text-on-surface-variant">{user.email}</div>
+                        <div className="font-bold text-slate-700">{user.full_name}</div>
+                        <div className="text-xs text-slate-700-variant">{user.email}</div>
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider
@@ -273,8 +273,8 @@ export const AdminUsers = () => {
                           {user.role}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-on-surface-variant">{user.department || '--'}</td>
-                      <td className="px-6 py-4 text-on-surface-variant">{managerName}</td>
+                      <td className="px-6 py-4 text-slate-700-variant">{user.department || '--'}</td>
+                      <td className="px-6 py-4 text-slate-700-variant">{managerName}</td>
                       <td className="px-6 py-4 text-right space-x-2">
                         <button
                           onClick={() => handleUnlockGoals(user.id, user.full_name)}
@@ -286,7 +286,7 @@ export const AdminUsers = () => {
                         </button>
                         <button
                           onClick={() => handleOpenEdit(user)}
-                          className="px-3 py-1.5 rounded bg-surface-variant text-on-surface hover:bg-white/10 font-bold text-xs transition-colors"
+                          className="px-3 py-1.5 rounded bg-surface-variant text-slate-700 hover:bg-slate-200 font-bold text-xs transition-colors"
                         >
                           Edit
                         </button>
@@ -304,14 +304,14 @@ export const AdminUsers = () => {
       {selectedUser && (
         <>
           <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100]" onClick={() => setSelectedUser(null)}></div>
-          <div className="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container-lowest border-l border-white/10 z-[110] shadow-2xl flex flex-col transform animate-slide-in-right">
+          <div className="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container-lowest border-l border-outline z-[110] shadow-2xl flex flex-col transform animate-slide-in-right">
             
-            <div className="px-8 py-6 border-b border-white/5 bg-surface-container flex justify-between items-center">
+            <div className="px-8 py-6 border-b border-outline bg-surface-container flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-bold text-on-surface">Edit User</h2>
-                <p className="text-sm text-on-surface-variant">{selectedUser.full_name}</p>
+                <h2 className="text-xl font-bold text-slate-700">Edit User</h2>
+                <p className="text-sm text-slate-700-variant">{selectedUser.full_name}</p>
               </div>
-              <button onClick={() => setSelectedUser(null)} className="text-outline hover:text-on-surface p-2">
+              <button onClick={() => setSelectedUser(null)} className="text-slate-400 hover:text-slate-700 p-2">
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
@@ -319,10 +319,10 @@ export const AdminUsers = () => {
             <div className="flex-1 p-8 space-y-6 overflow-y-auto">
               
               <div className="space-y-2">
-                <label className="text-xs font-bold text-outline uppercase tracking-wider">Role</label>
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Role</label>
                 <select 
                   value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}
-                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-on-surface"
+                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-slate-700"
                 >
                   <option value="employee">Employee</option>
                   <option value="manager">Manager</option>
@@ -331,19 +331,19 @@ export const AdminUsers = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-outline uppercase tracking-wider">Department</label>
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Department</label>
                 <input 
                   type="text"
                   value={formData.department} onChange={e => setFormData({...formData, department: e.target.value})}
-                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-on-surface"
+                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-slate-700"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-bold text-outline uppercase tracking-wider">Manager</label>
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Manager</label>
                 <select 
                   value={formData.manager_id} onChange={e => setFormData({...formData, manager_id: e.target.value})}
-                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-on-surface"
+                  className="w-full bg-surface-variant border border-transparent focus:border-primary rounded-lg px-4 py-3 text-slate-700"
                 >
                   <option value="">None (Top Level)</option>
                   {managersList.map(m => (
@@ -356,10 +356,10 @@ export const AdminUsers = () => {
 
             </div>
 
-            <div className="p-6 border-t border-white/5 bg-surface-container flex justify-end gap-3">
+            <div className="p-6 border-t border-outline bg-surface-container flex justify-end gap-3">
               <button 
                 onClick={() => setSelectedUser(null)}
-                className="px-5 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-variant transition-colors"
+                className="px-5 py-2.5 rounded-lg font-bold text-slate-700-variant hover:bg-surface-variant transition-colors"
               >
                 Cancel
               </button>
@@ -391,23 +391,23 @@ export const AdminUsers = () => {
           ></div>
 
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-6">
-            <div className="w-full max-w-lg bg-surface-container border border-white/10 rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+            <div className="w-full max-w-lg bg-surface-container border border-outline rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
 
               {/* Header */}
-              <div className="px-8 py-6 border-b border-white/5 bg-surface-container-lowest flex items-center justify-between">
+              <div className="px-8 py-6 border-b border-outline bg-surface-container-lowest flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-on-surface">
+                  <h2 className="text-2xl font-bold text-slate-700">
                     Add New User
                   </h2>
 
-                  <p className="text-sm text-on-surface-variant mt-1">
+                  <p className="text-sm text-slate-700-variant mt-1">
                     Create employee, manager, or admin accounts
                   </p>
                 </div>
 
                 <button
                   onClick={() => setIsAddUserOpen(false)}
-                  className="text-outline hover:text-on-surface"
+                  className="text-slate-400 hover:text-slate-700"
                 >
                   <span className="material-symbols-outlined">
                     close
@@ -419,7 +419,7 @@ export const AdminUsers = () => {
               <div className="p-8 space-y-5">
 
                 <div>
-                  <label className="text-xs uppercase text-outline font-bold">
+                  <label className="text-xs uppercase text-slate-400 font-bold">
                     Full Name
                   </label>
 
@@ -433,13 +433,13 @@ export const AdminUsers = () => {
                         full_name: e.target.value
                       })
                     }
-                    className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:border-primary outline-none"
+                    className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700 focus:border-primary outline-none"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs uppercase text-outline font-bold">
+                  <label className="text-xs uppercase text-slate-400 font-bold">
                     Email
                   </label>
 
@@ -453,13 +453,13 @@ export const AdminUsers = () => {
                         email: e.target.value
                       })
                     }
-                    className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:border-primary outline-none"
+                    className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700 focus:border-primary outline-none"
                     placeholder="john@company.com"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs uppercase text-outline font-bold">
+                  <label className="text-xs uppercase text-slate-400 font-bold">
                     Password
                   </label>
 
@@ -473,7 +473,7 @@ export const AdminUsers = () => {
                         password: e.target.value
                       })
                     }
-                    className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:border-primary outline-none"
+                    className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700 focus:border-primary outline-none"
                     placeholder="Minimum 6 characters"
                   />
                 </div>
@@ -481,7 +481,7 @@ export const AdminUsers = () => {
                 <div className="grid grid-cols-2 gap-4">
 
                   <div>
-                    <label className="text-xs uppercase text-outline font-bold">
+                    <label className="text-xs uppercase text-slate-400 font-bold">
                       Role
                     </label>
 
@@ -494,7 +494,7 @@ export const AdminUsers = () => {
                           role: e.target.value
                         })
                       }
-                      className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface"
+                      className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700"
                     >
                       <option value="employee">Employee</option>
                       <option value="manager">Manager</option>
@@ -503,7 +503,7 @@ export const AdminUsers = () => {
                   </div>
 
                   <div>
-                    <label className="text-xs uppercase text-outline font-bold">
+                    <label className="text-xs uppercase text-slate-400 font-bold">
                       Department
                     </label>
 
@@ -517,7 +517,7 @@ export const AdminUsers = () => {
                           department: e.target.value
                         })
                       }
-                      className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface"
+                      className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700"
                       placeholder="Engineering"
                     />
                   </div>
@@ -525,7 +525,7 @@ export const AdminUsers = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs uppercase text-outline font-bold">
+                  <label className="text-xs uppercase text-slate-400 font-bold">
                     Reporting Manager
                   </label>
 
@@ -538,7 +538,7 @@ export const AdminUsers = () => {
                         manager_id: e.target.value
                       })
                     }
-                    className="w-full mt-2 bg-surface-variant border border-white/10 rounded-xl px-4 py-3 text-on-surface"
+                    className="w-full mt-2 bg-surface-variant border border-outline rounded-xl px-4 py-3 text-slate-700"
                   >
                     <option value="">None</option>
 
@@ -553,11 +553,11 @@ export const AdminUsers = () => {
               </div>
 
               {/* Footer */}
-              <div className="px-8 py-6 border-t border-white/5 bg-surface-container-lowest flex justify-end gap-3">
+              <div className="px-8 py-6 border-t border-outline bg-surface-container-lowest flex justify-end gap-3">
 
                 <button
                   onClick={() => setIsAddUserOpen(false)}
-                  className="px-5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors"
+                  className="px-5 py-2.5 rounded-lg text-slate-700-variant hover:bg-surface-variant transition-colors"
                 >
                   Cancel
                 </button>
@@ -566,7 +566,7 @@ export const AdminUsers = () => {
                   type="button"
                   onClick={handleCreateUser}
                   disabled={isCreatingUser}
-                  className={`px-6 py-2.5 rounded-lg font-bold shadow-lg transition-all ${isCreatingUser ? 'bg-surface-variant text-on-surface-variant cursor-not-allowed' : 'bg-primary hover:bg-primary/90 text-white'}`}
+                  className={`px-6 py-2.5 rounded-lg font-bold shadow-lg transition-all ${isCreatingUser ? 'bg-surface-variant text-slate-700-variant cursor-not-allowed' : 'bg-primary hover:bg-primary/90 text-white'}`}
                 >
                   {isCreatingUser ? 'Creating…' : 'Create User'}
                 </button>

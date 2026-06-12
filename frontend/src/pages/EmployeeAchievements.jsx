@@ -61,8 +61,8 @@ export const EmployeeAchievements = () => {
 
   if (!cycle) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
-        <h2 className="text-xl font-bold text-on-surface">No Active Cycle</h2>
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
+        <h2 className="text-xl font-bold text-slate-700">No Active Cycle</h2>
       </div>
     );
   }
@@ -163,7 +163,7 @@ export const EmployeeAchievements = () => {
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-8 right-8 z-50 bg-green-600 text-white px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(34,197,94,0.4)] flex items-center gap-3 animate-fade-in min-w-[300px]">
-          <span className="material-symbols-outlined bg-white/20 text-white p-1 rounded-full">check_circle</span>
+          <span className="material-symbols-outlined bg-primary/10 text-white p-1 rounded-full">check_circle</span>
           <span className="font-bold text-white">{toastMessage}</span>
           <button onClick={() => setToastMessage(null)} className="ml-auto text-white/70 hover:text-white">
             <span className="material-symbols-outlined text-[20px]">close</span>
@@ -172,20 +172,20 @@ export const EmployeeAchievements = () => {
       )}
 
       {/* HEADER SECTION */}
-      <div className="bg-surface-container p-8 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 shadow-lg">
+      <div className="bg-surface-container p-8 rounded-2xl border border-outline flex flex-col md:flex-row justify-between items-center gap-8 shadow-lg">
         <div>
           <h1 className="text-3xl font-display-md font-bold text-primary">{currentQuarterInfo.name}</h1>
-          <p className="text-on-surface-variant font-body-md mt-2">Log your progress and track achievements against your approved goals.</p>
-          <div className="mt-4 flex items-center gap-2 text-sm text-outline font-bold uppercase tracking-wider">
+          <p className="text-slate-700-variant font-body-md mt-2">Log your progress and track achievements against your approved goals.</p>
+          <div className="mt-4 flex items-center gap-2 text-sm text-slate-400 font-bold uppercase tracking-wider">
             <span className="material-symbols-outlined text-[18px]">checklist</span>
             {updatedGoalsCount} of {totalGoalsCount} goals updated
           </div>
         </div>
 
         {/* Massive Overall Score */}
-        <div className="relative w-40 h-40 shrink-0 flex items-center justify-center bg-surface-container-lowest rounded-full border border-white/5 shadow-inner">
+        <div className="relative w-40 h-40 shrink-0 flex items-center justify-center bg-surface-container-lowest rounded-full border border-outline shadow-inner">
           <svg className="absolute inset-0 w-full h-full -rotate-90">
-            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="10" />
+            <circle cx="80" cy="80" r="70" fill="none" stroke="#E5E7EB" strokeWidth="10" />
             <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" strokeWidth="10"
               className={`transition-all duration-1000 ease-out ${overallScore >= 100 ? 'text-success' : overallScore >= 80 ? 'text-primary' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}
               strokeDasharray="439.8"
@@ -194,8 +194,8 @@ export const EmployeeAchievements = () => {
             />
           </svg>
           <div className="text-center z-10">
-            <span className="text-4xl font-bold font-mono text-on-surface leading-none">{Math.round(Math.min(overallScore, 100))}%</span>
-            <span className="block text-[10px] uppercase text-outline font-bold tracking-widest mt-1">Weighted Score</span>
+            <span className="text-4xl font-bold font-mono text-slate-700 leading-none">{Math.round(Math.min(overallScore, 100))}%</span>
+            <span className="block text-[10px] uppercase text-slate-400 font-bold tracking-widest mt-1">Weighted Score</span>
           </div>
         </div>
       </div>
@@ -212,12 +212,12 @@ export const EmployeeAchievements = () => {
           const isPending = upsertAchievementMutation.isPending && upsertAchievementMutation.variables?.goal_id === goal.id;
 
           return (
-            <div key={goal.id} className="bg-surface-container rounded-2xl border border-white/5 overflow-hidden flex flex-col xl:flex-row group transition-all hover:border-white/10">
+            <div key={goal.id} className="bg-surface-container rounded-2xl border border-outline overflow-hidden flex flex-col xl:flex-row group transition-all hover:border-outline">
 
               {/* Left Side: Goal Info & Progress */}
-              <div className="flex-1 p-6 border-b xl:border-b-0 xl:border-r border-white/5">
+              <div className="flex-1 p-6 border-b xl:border-b-0 xl:border-r border-outline">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="px-3 py-1 bg-surface-variant text-on-surface-variant text-xs font-bold rounded-md uppercase tracking-wider">
+                  <span className="px-3 py-1 bg-surface-variant text-slate-700-variant text-xs font-bold rounded-md uppercase tracking-wider">
                     {goal.thrust_area}
                   </span>
                   <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-md flex items-center gap-1">
@@ -226,20 +226,20 @@ export const EmployeeAchievements = () => {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-on-surface">{goal.title}</h3>
-                <p className="text-on-surface-variant text-sm mt-2">{goal.description}</p>
+                <h3 className="text-xl font-bold text-slate-700">{goal.title}</h3>
+                <p className="text-slate-700-variant text-sm mt-2">{goal.description}</p>
 
-                <div className="mt-6 p-4 bg-surface-container-lowest rounded-xl border border-white/5">
+                <div className="mt-6 p-4 bg-surface-container-lowest rounded-xl border border-outline">
                   <div className="flex justify-between items-end mb-2">
-                    <div className="text-sm font-bold text-outline uppercase tracking-wider">Computed Score</div>
-                    <div className="text-xl font-bold font-mono text-on-surface">{Math.round(Math.min(score, 100))}%</div>
+                    <div className="text-sm font-bold text-slate-400 uppercase tracking-wider">Computed Score</div>
+                    <div className="text-xl font-bold font-mono text-slate-700">{Math.round(Math.min(score, 100))}%</div>
                   </div>
                   <div className="h-2 bg-surface-variant rounded-full overflow-hidden">
                     <div className={`h-full transition-all duration-500 ease-out ${barColor}`} style={{ width: `${Math.min(score, 100)}%` }} />
                   </div>
-                  <div className="flex justify-between items-center mt-3 text-sm text-outline font-medium">
+                  <div className="flex justify-between items-center mt-3 text-sm text-slate-400 font-medium">
                     <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">straighten</span> {goal.uom.replace('_', ' ')}</span>
-                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">flag</span> Target: <span className="text-on-surface">{goal.uom === 'timeline' ? (goal.target_date ? new Date(goal.target_date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '-') : goal.target}</span></span>
+                    <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]">flag</span> Target: <span className="text-slate-700">{goal.uom === 'timeline' ? (goal.target_date ? new Date(goal.target_date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '-') : goal.target}</span></span>
                   </div>
                 </div>
               </div>
@@ -251,19 +251,19 @@ export const EmployeeAchievements = () => {
 
                   {/* Actual Input based on UoM */}
                   <div>
-                    <label className="text-xs text-outline font-bold uppercase tracking-wider block mb-1">Actual Achievement</label>
+                    <label className="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Actual Achievement</label>
                     {goal.uom === 'numeric_min' || goal.uom === 'numeric_max' ? (
                       <input
                         type="number"
                         value={data.actual} onChange={(e) => handleFieldChange(goal.id, 'actual', e.target.value)}
-                        className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-mono"
+                        className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary font-mono"
                         placeholder={`Enter current value (Target: ${goal.target})`}
                       />
                     ) : goal.uom === 'timeline' ? (
                       <input
                         type="date"
                         value={data.actual_date} onChange={(e) => handleFieldChange(goal.id, 'actual_date', e.target.value)}
-                        className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                        className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                       />
                     ) : (
                       <label className="flex items-center gap-3 p-3 bg-surface-variant rounded-lg cursor-pointer hover:bg-surface-variant/80 transition-colors">
@@ -272,17 +272,17 @@ export const EmployeeAchievements = () => {
                           checked={data.isZero} onChange={(e) => handleFieldChange(goal.id, 'isZero', e.target.checked)}
                           className="w-5 h-5 rounded border-outline text-primary focus:ring-primary bg-background"
                         />
-                        <span className="text-on-surface font-medium">Achievement is Zero (Success)</span>
+                        <span className="text-slate-700 font-medium">Achievement is Zero (Success)</span>
                       </label>
                     )}
                   </div>
 
                   {/* Status Dropdown */}
                   <div>
-                    <label className="text-xs text-outline font-bold uppercase tracking-wider block mb-1">Status</label>
+                    <label className="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Status</label>
                     <select
                       value={data.status} onChange={(e) => handleFieldChange(goal.id, 'status', e.target.value)}
-                      className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary appearance-none font-medium"
+                      className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary appearance-none font-medium"
                     >
                       <option value="not_started">Not Started</option>
                       <option value="on_track">On Track</option>
@@ -292,11 +292,11 @@ export const EmployeeAchievements = () => {
 
                   {/* Note */}
                   <div>
-                    <label className="text-xs text-outline font-bold uppercase tracking-wider block mb-1">Employee Note (Optional)</label>
+                    <label className="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Employee Note (Optional)</label>
                     <textarea
                       rows="2"
                       value={data.employee_note} onChange={(e) => handleFieldChange(goal.id, 'employee_note', e.target.value)}
-                      className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary resize-none text-sm"
+                      className="w-full bg-surface-variant border border-transparent rounded-lg px-4 py-2.5 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary resize-none text-sm"
                       placeholder="Add context for your manager..."
                     ></textarea>
                   </div>

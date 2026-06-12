@@ -271,9 +271,9 @@ if (isLoading) {
 if (!cycle) {
     return (
         <div className="max-w-7xl mx-auto p-8">
-            <div className="bg-surface-container p-10 rounded-3xl border border-white/10 text-center">
-                <h2 className="text-2xl font-bold text-on-surface">No Active Cycle</h2>
-                <p className="text-on-surface-variant mt-3">Analytics requires an active cycle to display current performance.</p>
+            <div className="bg-surface-container p-10 rounded-3xl border border-outline text-center">
+                <h2 className="text-2xl font-bold text-slate-700">No Active Cycle</h2>
+                <p className="text-slate-700-variant mt-3">Analytics requires an active cycle to display current performance.</p>
             </div>
         </div>
     );
@@ -291,8 +291,8 @@ return (
     <div className="max-w-7xl mx-auto space-y-8 pb-32 animate-fade-in relative">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <h1 className="text-3xl font-display-md font-bold text-on-surface">Analytics</h1>
-                <p className="text-on-surface-variant mt-1">Goal performance insights across your organization.</p>
+                <h1 className="text-3xl font-display-md font-bold text-slate-700">Analytics</h1>
+                <p className="text-slate-700-variant mt-1">Goal performance insights across your organization.</p>
             </div>
             <div className="px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg text-primary font-bold flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -301,51 +301,51 @@ return (
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm overflow-hidden animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm overflow-hidden animate-fade-in">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm uppercase tracking-widest text-on-surface-variant">Avg Team Score</div>
-                    <div className="text-sm font-semibold text-on-surface">Q{currentQuarter}</div>
+                    <div className="text-sm uppercase tracking-widest text-slate-700-variant">Avg Team Score</div>
+                    <div className="text-sm font-semibold text-slate-700">Q{currentQuarter}</div>
                 </div>
-                <div className="text-4xl font-bold text-on-surface mb-2">{round(avgTeamScore)}%</div>
-                <p className="text-on-surface-variant text-sm">Weighted score across all employees.</p>
+                <div className="text-4xl font-bold text-slate-700 mb-2">{round(avgTeamScore)}%</div>
+                <p className="text-slate-700-variant text-sm">Weighted score across all employees.</p>
             </div>
 
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm overflow-hidden animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm overflow-hidden animate-fade-in">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm uppercase tracking-widest text-on-surface-variant">Goals On Track</div>
+                    <div className="text-sm uppercase tracking-widest text-slate-700-variant">Goals On Track</div>
                     <span className="text-sm font-semibold text-tertiary">Real-time</span>
                 </div>
-                <div className="text-4xl font-bold text-on-surface mb-2">{totalOnTrack}</div>
-                <p className="text-on-surface-variant text-sm">Achievements tagged as on track.</p>
+                <div className="text-4xl font-bold text-slate-700 mb-2">{totalOnTrack}</div>
+                <p className="text-slate-700-variant text-sm">Achievements tagged as on track.</p>
             </div>
 
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm overflow-hidden animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm overflow-hidden animate-fade-in">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm uppercase tracking-widest text-on-surface-variant">Goals Completed</div>
+                    <div className="text-sm uppercase tracking-widest text-slate-700-variant">Goals Completed</div>
                     <span className="text-sm font-semibold text-success">Finished</span>
                 </div>
-                <div className="text-4xl font-bold text-on-surface mb-2">{totalCompleted}</div>
-                <p className="text-on-surface-variant text-sm">Achievements with completed status.</p>
+                <div className="text-4xl font-bold text-slate-700 mb-2">{totalCompleted}</div>
+                <p className="text-slate-700-variant text-sm">Achievements with completed status.</p>
             </div>
 
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm overflow-hidden animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm overflow-hidden animate-fade-in">
                 <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm uppercase tracking-widest text-on-surface-variant">Check-in Rate</div>
+                    <div className="text-sm uppercase tracking-widest text-slate-700-variant">Check-in Rate</div>
                     <span className="text-sm font-semibold text-warning">Manager</span>
                 </div>
-                <div className="text-4xl font-bold text-on-surface mb-2">{round(checkinRate)}%</div>
-                <p className="text-on-surface-variant text-sm">Employees with manager comments this quarter.</p>
+                <div className="text-4xl font-bold text-slate-700 mb-2">{round(checkinRate)}%</div>
+                <p className="text-slate-700-variant text-sm">Employees with manager comments this quarter.</p>
             </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-w-0">
-            <div className="lg:col-span-2 bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
+            <div className="lg:col-span-2 bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
                     <div>
-                        <h2 className="text-xl font-semibold text-on-surface">Quarter-on-Quarter Performance</h2>
-                        <p className="text-on-surface-variant text-sm">Employee score trend by quarter.</p>
+                        <h2 className="text-xl font-semibold text-slate-700">Quarter-on-Quarter Performance</h2>
+                        <p className="text-slate-700-variant text-sm">Employee score trend by quarter.</p>
                     </div>
-                    <div className="text-xs uppercase tracking-[0.24em] text-on-surface-variant">Scores capped at 100%</div>
+                    <div className="text-xs uppercase tracking-[0.24em] text-slate-700-variant">Scores capped at 100%</div>
                 </div>
                 <div className="w-full min-w-0 overflow-hidden">
                     <div className="h-[420px] w-full min-h-[420px]">
@@ -355,7 +355,7 @@ return (
                                 data={quarterTrendData}
                                 margin={{ top: 20, right: 14, left: 0, bottom: 0 }}
                             >
-                                <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
+                                <CartesianGrid stroke="#E5E7EB" vertical={false} />
 
                                 <XAxis
                                     dataKey="quarter"
@@ -372,11 +372,11 @@ return (
                                 />
 
                                 <Tooltip
-                                    cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+                                    cursor={{ fill: 'rgba(0,0,0,0.02)' }}
                                     contentStyle={{
-                                        background: '#111827',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        color: '#f8fafc'
+                                        background: '#ffffff',
+                                        border: '1px solid #E5E7EB',
+                                        color: '#111827'
                                     }}
                                 />
 
@@ -399,14 +399,14 @@ return (
                 </div>
             </div>
 
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
-                <h2 className="text-xl font-semibold text-on-surface mb-3">Quarterly Score Radar</h2>
-                <p className="text-on-surface-variant text-sm mb-6">Average team performance across quarters.</p>
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
+                <h2 className="text-xl font-semibold text-slate-700 mb-3">Quarterly Score Radar</h2>
+                <p className="text-slate-700-variant text-sm mb-6">Average team performance across quarters.</p>
                 <div className="w-full min-w-0 overflow-hidden">
                     <div className="h-[320px] w-full min-h-[320px]">
                     <ResponsiveContainer width="100%" height={320} minWidth={300} style={{ minWidth: 300, minHeight: 320 }}>
                         <RadarChart data={radarData} outerRadius="80%">
-                            <PolarGrid stroke="rgba(255,255,255,0.08)" />
+                            <PolarGrid stroke="#E5E7EB" />
                             <PolarAngleAxis dataKey="metric" tick={{ fill: '#cbd5e1', fontSize: 12 }} />
                             <Radar name="Average Score" dataKey="score" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
                             <Legend wrapperStyle={{ color: '#cbd5e1' }} />
@@ -418,11 +418,11 @@ return (
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h2 className="text-xl font-semibold text-on-surface">Goals by Thrust Area</h2>
-                        <p className="text-on-surface-variant text-sm">Distribution of goals grouped by thrust area.</p>
+                        <h2 className="text-xl font-semibold text-slate-700">Goals by Thrust Area</h2>
+                        <p className="text-slate-700-variant text-sm">Distribution of goals grouped by thrust area.</p>
                     </div>
                 </div>
                 <div className="w-full min-w-0 overflow-hidden" style={{ minWidth: 300, minHeight: 360 }}>
@@ -444,18 +444,18 @@ return (
                                 ))}
                             </Pie>
                             <Legend layout="horizontal" verticalAlign="bottom" align="center" wrapperStyle={{ color: '#cbd5e1' }} />
-                            <Tooltip contentStyle={{ background: '#111827', border: '1px solid rgba(255,255,255,0.08)', color: '#f8fafc' }} />
+                            <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #E5E7EB', color: '#111827' }} />
                         </PieChart>
                     </ResponsiveContainer>
                     </div>
                 </div>
             </div>
 
-            <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
+            <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
                 <div className="flex items-center justify-between mb-6">
                     <div>
-                        <h2 className="text-xl font-semibold text-on-surface">UoM Type Distribution</h2>
-                        <p className="text-on-surface-variant text-sm">How goals are measured across the organization.</p>
+                        <h2 className="text-xl font-semibold text-slate-700">UoM Type Distribution</h2>
+                        <p className="text-slate-700-variant text-sm">How goals are measured across the organization.</p>
                     </div>
                 </div>
                 <div className="w-full min-w-0 overflow-hidden" style={{ minWidth: 300, minHeight: 360 }}>
@@ -476,7 +476,7 @@ return (
                                 ))}
                             </Pie>
                             <Legend layout="vertical" verticalAlign="middle" align="right" wrapperStyle={{ color: '#cbd5e1', paddingLeft: 24 }} />
-                            <Tooltip contentStyle={{ background: '#111827', border: '1px solid rgba(255,255,255,0.08)', color: '#f8fafc' }} />
+                            <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #E5E7EB', color: '#111827' }} />
                         </PieChart>
                     </ResponsiveContainer>
                     </div>
@@ -484,21 +484,21 @@ return (
             </div>
         </div>
 
-        <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
+        <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
                 <div>
-                    <h2 className="text-xl font-semibold text-on-surface">Achievement Status by Employee</h2>
-                    <p className="text-on-surface-variant text-sm">Current quarter achievement status counts per employee.</p>
+                    <h2 className="text-xl font-semibold text-slate-700">Achievement Status by Employee</h2>
+                    <p className="text-slate-700-variant text-sm">Current quarter achievement status counts per employee.</p>
                 </div>
             </div>
             <div className="w-full min-w-0 overflow-hidden" style={{ minWidth: 300, minHeight: 420 }}>
                 <div className="h-[420px] w-full min-h-[420px]">
                 <ResponsiveContainer width="100%" height={420} minWidth={300} minHeight={420} style={{ minWidth: 300, minHeight: 420 }}>
                     <BarChart data={statusData} margin={{ top: 16, right: 24, left: 0, bottom: 0 }}>
-                        <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
+                        <CartesianGrid stroke="#E5E7EB" vertical={false} />
                         <XAxis dataKey="employee" tick={{ fill: '#cbd5e1', fontSize: 12 }} axisLine={false} tickLine={false} interval={0} angle={-25} textAnchor="end" height={80} />
                         <YAxis tick={{ fill: '#cbd5e1', fontSize: 12 }} axisLine={false} tickLine={false} />
-                        <Tooltip contentStyle={{ background: '#111827', border: '1px solid rgba(255,255,255,0.08)', color: '#f8fafc' }} />
+                        <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #E5E7EB', color: '#111827' }} />
                         <Legend wrapperStyle={{ color: '#cbd5e1' }} />
                         <Bar dataKey="notStarted" stackId="status" name="Not Started" fill={STATUS_COLORS.notStarted} />
                         <Bar dataKey="onTrack" stackId="status" name="On Track" fill={STATUS_COLORS.onTrack} />
@@ -509,17 +509,17 @@ return (
             </div>
         </div>
 
-        <div className="bg-surface-container p-6 rounded-3xl border border-white/5 shadow-sm animate-fade-in">
+        <div className="bg-surface-container p-6 rounded-3xl border border-outline shadow-sm animate-fade-in">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
                 <div>
-                    <h2 className="text-xl font-semibold text-on-surface">Employee Score Leaderboard — Q{currentQuarter}</h2>
-                    <p className="text-on-surface-variant text-sm">Ranked weighted score performance for the current quarter.</p>
+                    <h2 className="text-xl font-semibold text-slate-700">Employee Score Leaderboard — Q{currentQuarter}</h2>
+                    <p className="text-slate-700-variant text-sm">Ranked weighted score performance for the current quarter.</p>
                 </div>
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full border-separate border-spacing-y-3">
                     <thead>
-                        <tr className="text-left text-xs uppercase tracking-[0.24em] text-on-surface-variant">
+                        <tr className="text-left text-xs uppercase tracking-[0.24em] text-slate-700-variant">
                             <th className="px-4 py-3">Rank</th>
                             <th className="px-4 py-3">Employee</th>
                             <th className="px-4 py-3">Department</th>
@@ -531,18 +531,18 @@ return (
                     <tbody>
                         {leaderboardData.length === 0 ? (
                             <tr>
-                                <td colSpan={6} className="px-4 py-8 text-center text-on-surface-variant">No leaderboard data available.</td>
+                                <td colSpan={6} className="px-4 py-8 text-center text-slate-700-variant">No leaderboard data available.</td>
                             </tr>
                         ) : (
                             leaderboardData.map((row) => (
-                                <tr key={row.name} className="bg-surface-container-lowest border-b border-white/5 rounded-3xl mb-3">
-                                    <td className="px-4 py-4 align-top font-bold text-on-surface">{row.medal}</td>
+                                <tr key={row.name} className="bg-surface-container-lowest border-b border-outline rounded-3xl mb-3">
+                                    <td className="px-4 py-4 align-top font-bold text-slate-700">{row.medal}</td>
                                     <td className="px-4 py-4 align-top">
-                                        <div className="font-semibold text-on-surface">{row.name}</div>
+                                        <div className="font-semibold text-slate-700">{row.name}</div>
                                     </td>
-                                    <td className="px-4 py-4 align-top text-on-surface-variant">{row.department}</td>
+                                    <td className="px-4 py-4 align-top text-slate-700-variant">{row.department}</td>
                                     <td className="px-4 py-4 align-top">{row.goalsUpdated}</td>
-                                    <td className="px-4 py-4 align-top font-bold text-on-surface">{round(row.score)}%</td>
+                                    <td className="px-4 py-4 align-top font-bold text-slate-700">{round(row.score)}%</td>
                                     <td className="px-4 py-4 align-top">
                                         <div className="h-3 rounded-full bg-surface-variant overflow-hidden">
                                             {(() => {

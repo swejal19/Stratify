@@ -118,10 +118,10 @@ export const ManagerReports = () => {
 
   if (!cycle) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
         <span className="material-symbols-outlined text-warning text-4xl mb-4">warning</span>
-        <h2 className="text-xl font-bold text-on-surface">No Active Cycle</h2>
-        <p className="text-on-surface-variant mt-2">There is currently no active performance cycle.</p>
+        <h2 className="text-xl font-bold text-slate-700">No Active Cycle</h2>
+        <p className="text-slate-700-variant mt-2">There is currently no active performance cycle.</p>
       </div>
     );
   }
@@ -207,15 +207,15 @@ export const ManagerReports = () => {
 
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-display-md font-bold text-on-surface">Team Reports</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">
+          <h1 className="text-3xl font-display-md font-bold text-slate-700">Team Reports</h1>
+          <p className="text-slate-700-variant font-body-md mt-1">
             Goal vs Actual performance across all quarters — {cycle.name}
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="text-sm text-outline">
-            <span className="font-bold text-on-surface">{teamMembers?.length || 0}</span> team members ·{' '}
-            <span className="font-bold text-on-surface">{rows.length}</span> goals
+          <div className="text-sm text-slate-400">
+            <span className="font-bold text-slate-700">{teamMembers?.length || 0}</span> team members ·{' '}
+            <span className="font-bold text-slate-700">{rows.length}</span> goals
           </div>
           <button
             onClick={exportCSV}
@@ -229,63 +229,63 @@ export const ManagerReports = () => {
       </div>
 
       {rows.length === 0 ? (
-        <div className="p-12 text-center bg-surface-container rounded-2xl border border-white/5">
-          <span className="material-symbols-outlined text-outline text-5xl mb-4">description</span>
-          <h2 className="text-xl font-bold text-on-surface">No Data Available</h2>
-          <p className="text-on-surface-variant mt-2">
+        <div className="p-12 text-center bg-surface-container rounded-2xl border border-outline">
+          <span className="material-symbols-outlined text-slate-400 text-5xl mb-4">description</span>
+          <h2 className="text-xl font-bold text-slate-700">No Data Available</h2>
+          <p className="text-slate-700-variant mt-2">
             Your team members haven't submitted goal sheets yet, or no achievements have been logged for this cycle.
           </p>
         </div>
       ) : (
-        <div className="bg-surface-container rounded-2xl border border-white/5 overflow-hidden shadow-lg flex flex-col h-[72vh]">
+        <div className="bg-surface-container rounded-2xl border border-outline overflow-hidden shadow-lg flex flex-col h-[72vh]">
           <div className="overflow-auto flex-1">
             <table className="w-full text-left border-collapse min-w-[1500px]">
-              <thead className="sticky top-0 z-10 bg-surface-container-lowest border-b border-white/10 shadow-sm">
-                <tr className="text-xs text-outline font-bold uppercase tracking-wider">
-                  <th className="px-4 py-4 bg-surface-container-lowest sticky left-0 z-20 border-r border-white/5">Employee</th>
-                  <th className="px-4 py-4 border-r border-white/5">Dept</th>
-                  <th className="px-4 py-4 border-r border-white/5">Goal</th>
+              <thead className="sticky top-0 z-10 bg-surface-container-lowest border-b border-outline shadow-sm">
+                <tr className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                  <th className="px-4 py-4 bg-surface-container-lowest sticky left-0 z-20 border-r border-outline">Employee</th>
+                  <th className="px-4 py-4 border-r border-outline">Dept</th>
+                  <th className="px-4 py-4 border-r border-outline">Goal</th>
                   <th className="px-4 py-4">UoM</th>
                   <th className="px-4 py-4">Wt.</th>
-                  <th className="px-4 py-4 border-r border-white/5 bg-primary/5">Target</th>
-                  <th className="px-4 py-4 bg-surface-variant/30">Q1 Actual</th>
-                  <th className="px-4 py-4 bg-surface-variant/30 border-r border-white/5">Q1 Score</th>
-                  <th className="px-4 py-4 bg-surface-variant/10">Q2 Actual</th>
-                  <th className="px-4 py-4 bg-surface-variant/10 border-r border-white/5">Q2 Score</th>
-                  <th className="px-4 py-4 bg-surface-variant/30">Q3 Actual</th>
-                  <th className="px-4 py-4 bg-surface-variant/30 border-r border-white/5">Q3 Score</th>
-                  <th className="px-4 py-4 bg-surface-variant/10">Q4 Actual</th>
-                  <th className="px-4 py-4 bg-surface-variant/10 border-r border-white/5">Q4 Score</th>
+                  <th className="px-4 py-4 border-r border-outline bg-primary/5">Target</th>
+                  <th className="px-4 py-4 bg-slate-100">Q1 Actual</th>
+                  <th className="px-4 py-4 bg-slate-100 border-r border-outline">Q1 Score</th>
+                  <th className="px-4 py-4 bg-slate-50">Q2 Actual</th>
+                  <th className="px-4 py-4 bg-slate-50 border-r border-outline">Q2 Score</th>
+                  <th className="px-4 py-4 bg-slate-100">Q3 Actual</th>
+                  <th className="px-4 py-4 bg-slate-100 border-r border-outline">Q3 Score</th>
+                  <th className="px-4 py-4 bg-slate-50">Q4 Actual</th>
+                  <th className="px-4 py-4 bg-slate-50 border-r border-outline">Q4 Score</th>
                   <th className="px-4 py-4 bg-primary/10 text-primary">Wtd. Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5 text-sm">
                 {rows.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="px-4 py-3 font-bold text-on-surface bg-surface-container sticky left-0 z-10 border-r border-white/5">{row.employee}</td>
-                    <td className="px-4 py-3 text-on-surface-variant border-r border-white/5">{row.department}</td>
-                    <td className="px-4 py-3 text-on-surface-variant border-r border-white/5 max-w-[200px] truncate" title={row.goal}>{row.goal}</td>
-                    <td className="px-4 py-3 text-outline text-xs uppercase">{row.uom?.replace(/_/g, ' ')}</td>
+                  <tr key={idx} className="hover:hover:bg-slate-50 transition-colors">
+                    <td className="px-4 py-3 font-bold text-slate-700 bg-surface-container sticky left-0 z-10 border-r border-outline">{row.employee}</td>
+                    <td className="px-4 py-3 text-slate-700-variant border-r border-outline">{row.department}</td>
+                    <td className="px-4 py-3 text-slate-700-variant border-r border-outline max-w-[200px] truncate" title={row.goal}>{row.goal}</td>
+                    <td className="px-4 py-3 text-slate-400 text-xs uppercase">{row.uom?.replace(/_/g, ' ')}</td>
                     <td className="px-4 py-3 font-mono">{row.weightage}%</td>
-                    <td className="px-4 py-3 font-mono font-bold text-on-surface border-r border-white/5 bg-primary/5">{row.target || '--'}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-slate-700 border-r border-outline bg-primary/5">{row.target || '--'}</td>
 
-                    <td className="px-4 py-3 font-mono bg-surface-variant/30">{row.q1_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-surface-variant/30 border-r border-white/5 ${scoreColor(row.q1_score)}`}>
+                    <td className="px-4 py-3 font-mono bg-slate-100">{row.q1_actual || '--'}</td>
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${scoreColor(row.q1_score)}`}>
                       {row.q1_score !== null ? `${Math.round(row.q1_score)}%` : '--'}
                     </td>
 
-                    <td className="px-4 py-3 font-mono bg-surface-variant/10">{row.q2_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-surface-variant/10 border-r border-white/5 ${scoreColor(row.q2_score)}`}>
+                    <td className="px-4 py-3 font-mono bg-slate-50">{row.q2_actual || '--'}</td>
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${scoreColor(row.q2_score)}`}>
                       {row.q2_score !== null ? `${Math.round(row.q2_score)}%` : '--'}
                     </td>
 
-                    <td className="px-4 py-3 font-mono bg-surface-variant/30">{row.q3_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-surface-variant/30 border-r border-white/5 ${scoreColor(row.q3_score)}`}>
+                    <td className="px-4 py-3 font-mono bg-slate-100">{row.q3_actual || '--'}</td>
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${scoreColor(row.q3_score)}`}>
                       {row.q3_score !== null ? `${Math.round(row.q3_score)}%` : '--'}
                     </td>
 
-                    <td className="px-4 py-3 font-mono bg-surface-variant/10">{row.q4_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-surface-variant/10 border-r border-white/5 ${scoreColor(row.q4_score)}`}>
+                    <td className="px-4 py-3 font-mono bg-slate-50">{row.q4_actual || '--'}</td>
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${scoreColor(row.q4_score)}`}>
                       {row.q4_score !== null ? `${Math.round(row.q4_score)}%` : '--'}
                     </td>
 

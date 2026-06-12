@@ -24,7 +24,7 @@ export const NotFoundPage = () => {
         
         {/* Glowing 404 */}
         <div className="relative mb-8">
-          <span className="text-[160px] font-black text-on-surface/5 leading-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <span className="text-[160px] font-black text-slate-700/5 leading-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             404
           </span>
           <div className="w-24 h-24 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto shadow-[0_0_40px_rgba(56,189,248,0.2)] relative">
@@ -32,15 +32,15 @@ export const NotFoundPage = () => {
           </div>
         </div>
 
-        <h1 className="text-4xl font-black text-on-surface mb-3">Page Not Found</h1>
-        <p className="text-on-surface-variant text-lg mb-10 leading-relaxed">
+        <h1 className="text-4xl font-black text-slate-700 mb-3">Page Not Found</h1>
+        <p className="text-slate-700-variant text-lg mb-10 leading-relaxed">
           The page you are looking for doesn't exist or has been moved.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => navigate(-1)}
-            className="px-6 py-3 rounded-xl font-bold border border-white/10 text-on-surface hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+            className="px-6 py-3 rounded-xl font-bold border border-outline text-slate-700 hover:bg-slate-100 transition-all flex items-center justify-center gap-2"
           >
             <span className="material-symbols-outlined text-[20px]">arrow_back</span>
             Go Back

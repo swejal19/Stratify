@@ -38,8 +38,8 @@ export const ManagerApproval = () => {
 
   if (!profile || !sheet) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
-        <h2 className="text-xl font-bold text-on-surface">Goal Sheet Not Found</h2>
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
+        <h2 className="text-xl font-bold text-slate-700">Goal Sheet Not Found</h2>
         <button onClick={() => navigate('/manager/team')} className="mt-4 text-primary hover:underline">Return to Team</button>
       </div>
     );
@@ -136,33 +136,33 @@ export const ManagerApproval = () => {
 
       {/* Header Section */}
       <div className="flex items-center gap-4 mb-2">
-        <button onClick={() => navigate('/manager/team')} className="text-outline hover:text-on-surface transition-colors flex items-center gap-1 text-sm font-bold">
+        <button onClick={() => navigate('/manager/team')} className="text-slate-400 hover:text-slate-700 transition-colors flex items-center gap-1 text-sm font-bold">
           <span className="material-symbols-outlined text-[18px]">arrow_back</span>
           Back to Team
         </button>
       </div>
 
-      <div className="bg-surface-container p-8 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="bg-surface-container p-8 rounded-2xl border border-outline flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center gap-5">
           <div className="w-16 h-16 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-2xl border border-primary/30">
             {profile.full_name?.charAt(0)}
           </div>
           <div>
-            <h1 className="text-3xl font-display-md font-bold text-on-surface">{profile.full_name}</h1>
-            <p className="text-on-surface-variant font-body-md mt-1">{profile.department} &middot; {cycle.name}</p>
+            <h1 className="text-3xl font-display-md font-bold text-slate-700">{profile.full_name}</h1>
+            <p className="text-slate-700-variant font-body-md mt-1">{profile.department} &middot; {cycle.name}</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="text-sm text-outline uppercase tracking-wider font-bold mb-1">Submitted At</p>
-          <p className="text-on-surface font-mono">{sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleString() : 'N/A'}</p>
+          <p className="text-sm text-slate-400 uppercase tracking-wider font-bold mb-1">Submitted At</p>
+          <p className="text-slate-700 font-mono">{sheet.submitted_at ? new Date(sheet.submitted_at).toLocaleString() : 'N/A'}</p>
         </div>
       </div>
 
       {/* Weightage Tracker */}
-      <div className="bg-surface-container-lowest p-6 rounded-2xl border border-white/5">
+      <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline">
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h2 className="text-lg font-bold text-on-surface">Total Weightage</h2>
+            <h2 className="text-lg font-bold text-slate-700">Total Weightage</h2>
           </div>
           <div className="text-right">
             <span className={`text-2xl font-bold transition-colors ${isComplete ? 'text-success' : isOver ? 'text-error' : 'text-primary'}`}>
@@ -184,11 +184,11 @@ export const ManagerApproval = () => {
       {/* Goals List */}
       <div className="space-y-4">
         {goals?.map(goal => (
-          <div key={goal.id} className="bg-surface-container p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row gap-6">
+          <div key={goal.id} className="bg-surface-container p-6 rounded-2xl border border-outline flex flex-col md:flex-row gap-6">
             
             <div className="flex-1 space-y-3">
               <div className="flex items-center gap-3">
-                <span className="px-3 py-1 bg-surface-variant text-on-surface-variant text-xs font-bold rounded-md uppercase tracking-wider">
+                <span className="px-3 py-1 bg-surface-variant text-slate-700-variant text-xs font-bold rounded-md uppercase tracking-wider">
                   {goal.thrust_area}
                 </span>
                 {goal.is_shared && (
@@ -200,32 +200,32 @@ export const ManagerApproval = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-bold text-on-surface">{goal.title}</h3>
-                <p className="text-on-surface-variant text-sm mt-1">{goal.description}</p>
+                <h3 className="text-lg font-bold text-slate-700">{goal.title}</h3>
+                <p className="text-slate-700-variant text-sm mt-1">{goal.description}</p>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-outline pt-2">
+              <div className="flex items-center gap-2 text-sm text-slate-400 pt-2">
                 <span className="material-symbols-outlined text-[18px]">straighten</span>
-                Type: <span className="text-on-surface-variant font-medium">{goal.uom?.replace('_', ' ')}</span>
+                Type: <span className="text-slate-700-variant font-medium">{goal.uom?.replace('_', ' ')}</span>
               </div>
             </div>
 
             {/* Editable Fields */}
-            <div className="flex md:flex-col gap-4 shrink-0 bg-surface-container-lowest p-4 rounded-xl border border-white/5 min-w-[200px]">
+            <div className="flex md:flex-col gap-4 shrink-0 bg-surface-container-lowest p-4 rounded-xl border border-outline min-w-[200px]">
               
               <div className="flex flex-col gap-1 w-full">
-                <label className="text-xs text-outline font-bold uppercase">Target</label>
+                <label className="text-xs text-slate-400 font-bold uppercase">Target</label>
                 {isEditable ? (
                   <input 
                     type={goal.uom === 'timeline' ? "date" : "number"}
-                    className="bg-surface-variant border border-transparent focus:border-primary focus:ring-1 focus:ring-primary rounded-md px-3 py-2 text-on-surface font-mono transition-all w-full"
+                    className="bg-surface-variant border border-transparent focus:border-primary focus:ring-1 focus:ring-primary rounded-md px-3 py-2 text-slate-700 font-mono transition-all w-full"
                     value={editingTarget.id === goal.id ? editingTarget.value : (goal.uom === 'timeline' ? (goal.target_date || '') : (goal.target || ''))}
                     onChange={(e) => setEditingTarget({ id: goal.id, value: e.target.value })}
                     onFocus={() => setEditingTarget({ id: goal.id, value: goal.uom === 'timeline' ? (goal.target_date || '') : String(goal.target || '') })}
                     onBlur={() => handleTargetBlur(goal)}
                   />
                 ) : (
-                  <span className="text-on-surface font-mono px-3 py-2">
+                  <span className="text-slate-700 font-mono px-3 py-2">
                     {goal.uom === 'timeline' 
                       ? (goal.target_date ? new Date(goal.target_date + 'T00:00:00').toLocaleDateString('en-GB') : '--')
                       : (goal.uom === 'zero' ? 'Zero' : goal.target)}
@@ -234,21 +234,21 @@ export const ManagerApproval = () => {
               </div>
 
               <div className="flex flex-col gap-1 w-full">
-                <label className="text-xs text-outline font-bold uppercase">Weightage (%)</label>
+                <label className="text-xs text-slate-400 font-bold uppercase">Weightage (%)</label>
                 {isEditable ? (
                   <div className="relative">
                     <input 
                       type="number"
-                      className="bg-surface-variant border border-transparent focus:border-primary focus:ring-1 focus:ring-primary rounded-md px-3 py-2 text-on-surface font-mono transition-all w-full pr-8"
+                      className="bg-surface-variant border border-transparent focus:border-primary focus:ring-1 focus:ring-primary rounded-md px-3 py-2 text-slate-700 font-mono transition-all w-full pr-8"
                       value={editingWeightage.id === goal.id ? editingWeightage.value : goal.weightage}
                       onChange={(e) => setEditingWeightage({ id: goal.id, value: e.target.value })}
                       onFocus={() => setEditingWeightage({ id: goal.id, value: String(goal.weightage) })}
                       onBlur={() => handleWeightageBlur(goal)}
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-outline-variant font-mono">%</span>
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400-variant font-mono">%</span>
                   </div>
                 ) : (
-                  <span className="text-on-surface font-mono px-3 py-2">{goal.weightage}%</span>
+                  <span className="text-slate-700 font-mono px-3 py-2">{goal.weightage}%</span>
                 )}
               </div>
 
@@ -260,7 +260,7 @@ export const ManagerApproval = () => {
 
       {/* STICKY FOOTER ACTIONS */}
       {isEditable && (
-        <div className="fixed bottom-0 left-0 lg:left-64 right-0 bg-surface-container-lowest/80 backdrop-blur-xl border-t border-white/10 p-6 flex justify-end gap-4 z-50">
+        <div className="fixed bottom-0 left-0 lg:left-64 right-0 bg-surface-container-lowest/80 backdrop-blur-xl border-t border-outline p-6 flex justify-end gap-4 z-50">
           <button
             onClick={() => setIsReworkModalOpen(true)}
             disabled={approveGoalsMutation.isPending || returnForReworkMutation.isPending}
@@ -283,7 +283,7 @@ export const ManagerApproval = () => {
       {/* REWORK MODAL */}
       {isReworkModalOpen && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-surface-container-lowest border border-white/10 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+          <div className="bg-surface-container-lowest border border-outline w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
             
             <div className="px-6 py-4 border-b border-warning/20 bg-warning/10 flex items-center gap-3">
               <span className="material-symbols-outlined text-warning">warning</span>
@@ -292,28 +292,28 @@ export const ManagerApproval = () => {
 
             <div className="p-6">
               <form id="reworkForm" onSubmit={handleReworkSubmit} className="space-y-4">
-                <p className="text-on-surface-variant text-sm">
+                <p className="text-slate-700-variant text-sm">
                   Please provide feedback on what needs to be changed. This will unlock the goal sheet for the employee to edit and resubmit.
                 </p>
                 <div className="space-y-2">
-                  <label className="font-label-md text-on-surface block">Manager Feedback <span className="text-error">*</span></label>
+                  <label className="font-label-md text-slate-700 block">Manager Feedback <span className="text-error">*</span></label>
                   <textarea 
                     required 
                     value={reworkComment} 
                     onChange={(e) => setReworkComment(e.target.value)} 
                     rows="4"
-                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-warning focus:ring-1 focus:ring-warning"
+                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-warning focus:ring-1 focus:ring-warning"
                     placeholder="E.g., Please increase the target for Q3 Revenue to match team objectives..."
                   ></textarea>
                 </div>
               </form>
             </div>
 
-            <div className="px-6 py-4 border-t border-white/5 bg-surface-container flex justify-end gap-3">
+            <div className="px-6 py-4 border-t border-outline bg-surface-container flex justify-end gap-3">
               <button 
                 type="button" 
                 onClick={() => setIsReworkModalOpen(false)}
-                className="px-5 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-variant transition-colors"
+                className="px-5 py-2.5 rounded-lg font-bold text-slate-700-variant hover:bg-surface-variant transition-colors"
               >
                 Cancel
               </button>

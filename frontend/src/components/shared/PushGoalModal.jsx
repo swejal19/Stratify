@@ -75,10 +75,10 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
 
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in">
-      <div className="bg-surface-container-lowest border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-surface-container-lowest border border-outline w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/5 bg-surface-container flex justify-between items-center shrink-0">
+        <div className="px-6 py-4 border-b border-outline bg-surface-container flex justify-between items-center shrink-0">
           <div>
             <h2 className="text-xl font-bold text-on-surface">Push Shared Goal</h2>
             <div className="flex gap-2 mt-1">
@@ -142,7 +142,7 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-outline uppercase">Target</label>
                   {formData.uom === 'zero' ? (
-                    <div className="w-full rounded-lg border border-white/10 bg-surface-variant px-3 py-3 text-on-surface-variant">
+                    <div className="w-full rounded-lg border border-outline bg-surface-variant px-3 py-3 text-on-surface-variant">
                       Target is automatically set to Zero
                     </div>
                   ) : formData.uom === 'timeline' ? (
@@ -185,17 +185,17 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
                 <input 
                   type="text" placeholder="Search employees by name or dept..."
                   value={search} onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-surface-container border border-white/10 rounded-lg text-on-surface focus:border-primary"
+                  className="w-full pl-10 pr-4 py-2 bg-surface-container border border-outline rounded-lg text-on-surface focus:border-primary"
                 />
               </div>
 
-              <div className="flex justify-between items-center px-2 py-1 shrink-0 border-b border-white/5 pb-2">
+              <div className="flex justify-between items-center px-2 py-1 shrink-0 border-b border-outline pb-2">
                 <label className="flex items-center gap-2 cursor-pointer text-sm font-bold text-on-surface">
                   <input 
                     type="checkbox" 
                     checked={selectedEmployees.length === filteredEmployees.length && filteredEmployees.length > 0}
                     onChange={handleSelectAll}
-                    className="w-4 h-4 rounded border-white/20 bg-surface-variant text-primary focus:ring-primary"
+                    className="w-4 h-4 rounded border-outline bg-surface-variant text-primary focus:ring-primary"
                   />
                   Select All
                 </label>
@@ -204,12 +204,12 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
 
               <div className="flex-1 overflow-y-auto space-y-1 custom-scrollbar pr-2 min-h-[250px]">
                 {filteredEmployees.map(emp => (
-                  <label key={emp.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedEmployees.includes(emp.id) ? 'bg-primary/10 border border-primary/20' : 'hover:bg-white/[0.02] border border-transparent'}`}>
+                  <label key={emp.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedEmployees.includes(emp.id) ? 'bg-primary/10 border border-primary/20' : 'hover:hover:bg-slate-50 border border-transparent'}`}>
                     <input 
                       type="checkbox" 
                       checked={selectedEmployees.includes(emp.id)}
                       onChange={() => handleToggleEmployee(emp.id)}
-                      className="w-4 h-4 rounded border-white/20 bg-surface-variant text-primary focus:ring-primary"
+                      className="w-4 h-4 rounded border-outline bg-surface-variant text-primary focus:ring-primary"
                     />
                     <div>
                       <div className="font-bold text-on-surface text-sm">{emp.full_name}</div>
@@ -228,7 +228,7 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
             <div className="space-y-6 animate-slide-up">
               <h3 className="text-lg font-bold text-on-surface">Step 3: Confirm & Push</h3>
               
-              <div className="bg-surface-container border border-white/5 p-5 rounded-xl space-y-4">
+              <div className="bg-surface-container border border-outline p-5 rounded-xl space-y-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-tertiary/20 text-tertiary border border-tertiary/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
                     Shared Goal
@@ -238,10 +238,10 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
                 <h4 className="text-xl font-bold text-on-surface">{formData.title}</h4>
                 <p className="text-sm text-on-surface-variant">{formData.description}</p>
                 
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-outline">
                   <div>
                     <div className="text-xs text-outline uppercase font-bold mb-1">Target</div>
-                    <div className="font-mono text-on-surface font-bold bg-surface-variant/50 px-2 py-1 rounded inline-block">
+                    <div className="font-mono text-on-surface font-bold bg-slate-50 px-2 py-1 rounded inline-block">
                       {formData.uom === 'zero'
                         ? 'Zero'
                         : formData.uom === 'timeline'
@@ -273,7 +273,7 @@ export const PushGoalModal = ({ isOpen, onClose, employees }) => {
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 border-t border-white/5 bg-surface-container flex justify-between shrink-0">
+        <div className="px-6 py-4 border-t border-outline bg-surface-container flex justify-between shrink-0">
           <button 
             onClick={() => setStep(prev => Math.max(1, prev - 1))}
             className={`px-5 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-variant transition-colors ${step === 1 ? 'invisible' : ''}`}

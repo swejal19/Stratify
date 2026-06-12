@@ -47,10 +47,10 @@ export const EmployeeProgress = () => {
 
   if (!cycle) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
         <span className="material-symbols-outlined text-warning text-4xl mb-4">warning</span>
-        <h2 className="text-xl font-bold text-on-surface">No Active Cycle</h2>
-        <p className="text-on-surface-variant mt-2">There is currently no active goal setting cycle open.</p>
+        <h2 className="text-xl font-bold text-slate-700">No Active Cycle</h2>
+        <p className="text-slate-700-variant mt-2">There is currently no active goal setting cycle open.</p>
       </div>
     );
   }
@@ -191,13 +191,13 @@ export const EmployeeProgress = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-display-md font-bold text-on-surface">My Progress</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">Track your goals and achievements throughout the quarter.</p>
+          <h1 className="text-3xl font-display-md font-bold text-slate-700">My Progress</h1>
+          <p className="text-slate-700-variant font-body-md mt-1">Track your goals and achievements throughout the quarter.</p>
         </div>
       </div>
 
       {/* Overall Score Card */}
-      <div className="bg-surface-container rounded-2xl border border-white/5 p-8 shadow-lg">
+      <div className="bg-surface-container rounded-2xl border border-outline p-8 shadow-lg">
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Circular Progress */}
           <div className="relative w-40 h-40 flex-shrink-0">
@@ -210,7 +210,7 @@ export const EmployeeProgress = () => {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="8"
-                className="text-surface-variant"
+                className="text-slate-400"
               />
               {/* Progress circle */}
               <circle
@@ -235,9 +235,9 @@ export const EmployeeProgress = () => {
 
           {/* Stats */}
           <div className="flex-1 text-center md:text-left">
-            <h2 className="text-2xl font-bold text-on-surface mb-1">{currentQuarterInfo.name}</h2>
-            <p className="text-on-surface-variant text-lg">
-              Goals Completed: <span className="font-bold text-on-surface">{completedGoals}</span> of <span className="font-bold text-on-surface">{totalGoals}</span>
+            <h2 className="text-2xl font-bold text-slate-700 mb-1">{currentQuarterInfo.name}</h2>
+            <p className="text-slate-700-variant text-lg">
+              Goals Completed: <span className="font-bold text-slate-700">{completedGoals}</span> of <span className="font-bold text-slate-700">{totalGoals}</span>
             </p>
             <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
               <span className="material-symbols-outlined text-primary">verified</span>
@@ -248,8 +248,8 @@ export const EmployeeProgress = () => {
       </div>
 
       {/* Quarter Summary */}
-      <div className="bg-surface-container rounded-2xl border border-white/5 p-6">
-        <h3 className="text-lg font-bold text-on-surface mb-4">Quarter Summary</h3>
+      <div className="bg-surface-container rounded-2xl border border-outline p-6">
+        <h3 className="text-lg font-bold text-slate-700 mb-4">Quarter Summary</h3>
         <div className="flex gap-4">
           {quarterLabels.map((q, idx) => {
             const isActive = idx + 1 === quarter;
@@ -258,10 +258,10 @@ export const EmployeeProgress = () => {
                 key={q}
                 className={`flex-1 p-4 rounded-xl border text-center transition-all ${isActive
                     ? 'bg-primary/10 border-primary/30'
-                    : 'bg-surface-variant/30 border-white/5'
+                    : 'bg-slate-100 border-outline'
                   }`}
               >
-                <span className={`text-lg font-bold ${isActive ? 'text-primary' : 'text-on-surface-variant'}`}>
+                <span className={`text-lg font-bold ${isActive ? 'text-primary' : 'text-slate-700-variant'}`}>
                   {q}
                 </span>
                 {isActive && (
@@ -275,12 +275,12 @@ export const EmployeeProgress = () => {
 
       {/* Goal Progress Cards */}
       <div className="space-y-4">
-        <h3 className="text-xl font-bold text-on-surface">Goal Progress</h3>
+        <h3 className="text-xl font-bold text-slate-700">Goal Progress</h3>
 
         {goalScores.map((goal) => (
           <div
             key={goal.id}
-            className="bg-surface-container rounded-2xl border border-white/5 p-6 hover:border-primary/20 transition-all animate-fade-in"
+            className="bg-surface-container rounded-2xl border border-outline p-6 hover:border-primary/20 transition-all animate-fade-in"
           >
             <div className="flex flex-col lg:flex-row lg:items-center gap-4">
 
@@ -288,8 +288,8 @@ export const EmployeeProgress = () => {
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-4 mb-2">
                   <div>
-                    <h4 className="text-lg font-bold text-on-surface">{goal.title}</h4>
-                    <p className="text-on-surface-variant text-sm">{goal.thrust_area} • Weightage: {goal.weightage}%</p>
+                    <h4 className="text-lg font-bold text-slate-700">{goal.title}</h4>
+                    <p className="text-slate-700-variant text-sm">{goal.thrust_area} • Weightage: {goal.weightage}%</p>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${goal.statusColor}`}>
                     {goal.status}
@@ -298,28 +298,28 @@ export const EmployeeProgress = () => {
 
                 {/* Target vs Actual */}
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div className="bg-surface-variant/30 rounded-lg p-3">
-                    <p className="text-xs text-outline uppercase font-bold">Target</p>
-                    <p className="text-on-surface font-mono mt-1">{goal.displayTarget}</p>
+                  <div className="bg-slate-100 rounded-lg p-3">
+                    <p className="text-xs text-slate-400 uppercase font-bold">Target</p>
+                    <p className="text-slate-700 font-mono mt-1">{goal.displayTarget}</p>
                   </div>
-                  <div className="bg-surface-variant/30 rounded-lg p-3">
-                    <p className="text-xs text-outline uppercase font-bold">Actual</p>
-                    <p className="text-on-surface font-mono mt-1">{goal.displayActual}</p>
+                  <div className="bg-slate-100 rounded-lg p-3">
+                    <p className="text-xs text-slate-400 uppercase font-bold">Actual</p>
+                    <p className="text-slate-700 font-mono mt-1">{goal.displayActual}</p>
                   </div>
                 </div>
 
                 {/* Employee Note */}
                 {goal.employeeNote && (
-                  <div className="mt-4 p-3 bg-surface-variant/30 rounded-lg border border-white/5">
-                    <p className="text-xs text-outline uppercase font-bold mb-1">Your Note</p>
-                    <p className="text-on-surface-variant text-sm">{goal.employeeNote}</p>
+                  <div className="mt-4 p-3 bg-slate-100 rounded-lg border border-outline">
+                    <p className="text-xs text-slate-400 uppercase font-bold mb-1">Your Note</p>
+                    <p className="text-slate-700-variant text-sm">{goal.employeeNote}</p>
                   </div>
                 )}
               </div>
 
               {/* Score */}
               <div className="flex flex-col items-center lg:min-w-[120px]">
-                <div className="text-3xl font-bold font-mono text-on-surface">{Math.round(goal.score)}%</div>
+                <div className="text-3xl font-bold font-mono text-slate-700">{Math.round(goal.score)}%</div>
                 <div className="w-32 h-2 bg-surface-variant rounded-full mt-2 overflow-hidden">
                   <div
                     className={`h-full transition-all duration-500 ${goal.score >= 100 ? 'bg-success' : goal.score >= 50 ? 'bg-warning' : 'bg-error'

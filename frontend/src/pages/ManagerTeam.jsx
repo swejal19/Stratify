@@ -22,10 +22,10 @@ export const ManagerTeam = () => {
 
   if (!cycle) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
         <span className="material-symbols-outlined text-warning text-4xl mb-4">warning</span>
-        <h2 className="text-xl font-bold text-on-surface">No Active Cycle</h2>
-        <p className="text-on-surface-variant mt-2">There is currently no active goal setting cycle open.</p>
+        <h2 className="text-xl font-bold text-slate-700">No Active Cycle</h2>
+        <p className="text-slate-700-variant mt-2">There is currently no active goal setting cycle open.</p>
       </div>
     );
   }
@@ -38,7 +38,7 @@ export const ManagerTeam = () => {
     switch(s) {
       case 'submitted': return <span className="px-3 py-1 bg-tertiary/10 text-tertiary border border-tertiary/20 rounded-full text-xs font-bold uppercase tracking-wider">Submitted</span>;
       case 'approved': return <span className="px-3 py-1 bg-success/10 text-success border border-success/20 rounded-full text-xs font-bold uppercase tracking-wider">Approved</span>;
-      case 'locked': return <span className="px-3 py-1 bg-surface-variant text-on-surface border border-outline rounded-full text-xs font-bold uppercase tracking-wider">Locked</span>;
+      case 'locked': return <span className="px-3 py-1 bg-surface-variant text-slate-700 border border-outline rounded-full text-xs font-bold uppercase tracking-wider">Locked</span>;
       case 'rework': return <span className="px-3 py-1 bg-warning/10 text-warning border border-warning/20 rounded-full text-xs font-bold uppercase tracking-wider">Rework</span>;
       default: return <span className="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-xs font-bold uppercase tracking-wider">Draft / Not Started</span>;
     }
@@ -50,8 +50,8 @@ export const ManagerTeam = () => {
       {/* Top Header */}
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
         <div>
-          <h1 className="text-3xl font-display-md font-bold text-on-surface">Team Goals</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">{cycle.name} Overview</p>
+          <h1 className="text-3xl font-display-md font-bold text-slate-700">Team Goals</h1>
+          <p className="text-slate-700-variant font-body-md mt-1">{cycle.name} Overview</p>
         </div>
         <button 
           onClick={() => setIsPushModalOpen(true)}
@@ -63,44 +63,44 @@ export const ManagerTeam = () => {
       </div>
 
       {/* Summary Bar */}
-      <div className="bg-surface-container p-6 rounded-2xl border border-white/5 flex items-center justify-between">
+      <div className="bg-surface-container p-6 rounded-2xl border border-outline flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
             <span className="material-symbols-outlined">group</span>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-on-surface">Submission Status</h2>
-            <p className="text-on-surface-variant text-sm mt-1">
-              <strong className="text-on-surface">{submittedCount}</strong> out of <strong className="text-on-surface">{totalCount}</strong> team members have submitted their goals.
+            <h2 className="text-xl font-bold text-slate-700">Submission Status</h2>
+            <p className="text-slate-700-variant text-sm mt-1">
+              <strong className="text-slate-700">{submittedCount}</strong> out of <strong className="text-slate-700">{totalCount}</strong> team members have submitted their goals.
             </p>
           </div>
         </div>
         
         {/* Progress Circle Visual */}
-        <div className="relative w-16 h-16 flex items-center justify-center rounded-full bg-surface-container-lowest border border-white/10 overflow-hidden">
+        <div className="relative w-16 h-16 flex items-center justify-center rounded-full bg-surface-container-lowest border border-outline overflow-hidden">
            <div className="absolute inset-0 bg-primary/20" style={{ height: `${totalCount === 0 ? 0 : (submittedCount / totalCount) * 100}%`, bottom: 0, top: 'auto' }} />
-           <span className="relative font-bold text-on-surface z-10">{totalCount === 0 ? 0 : Math.round((submittedCount/totalCount)*100)}%</span>
+           <span className="relative font-bold text-slate-700 z-10">{totalCount === 0 ? 0 : Math.round((submittedCount/totalCount)*100)}%</span>
         </div>
       </div>
 
       {/* Data Table */}
-      <div className="bg-surface-container rounded-2xl border border-white/5 overflow-hidden">
+      <div className="bg-surface-container rounded-2xl border border-outline overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-surface-container-lowest border-b border-white/5">
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm">Name</th>
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm">Department</th>
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm">Status</th>
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm">Weightage</th>
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm">Submitted At</th>
-                <th className="px-6 py-4 font-label-lg font-bold text-on-surface-variant uppercase tracking-wider text-sm text-right">Action</th>
+              <tr className="bg-surface-container-lowest border-b border-outline">
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm">Name</th>
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm">Department</th>
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm">Status</th>
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm">Weightage</th>
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm">Submitted At</th>
+                <th className="px-6 py-4 font-label-lg font-bold text-slate-700-variant uppercase tracking-wider text-sm text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {teamMembers?.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-on-surface-variant">
+                  <td colSpan="6" className="px-6 py-12 text-center text-slate-700-variant">
                     No team members found. Check your profile settings.
                   </td>
                 </tr>
@@ -112,7 +112,7 @@ export const ManagerTeam = () => {
                   return (
                     <tr 
                       key={member.id} 
-                      className="hover:bg-white/[0.02] transition-colors animate-fade-in group"
+                      className="hover:hover:bg-slate-50 transition-colors animate-fade-in group"
                       style={{ animationDelay: `${idx * 50}ms` }}
                     >
                       <td className="px-6 py-4">
@@ -120,10 +120,10 @@ export const ManagerTeam = () => {
                           <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">
                             {member.full_name?.charAt(0) || '?'}
                           </div>
-                          <span className="font-bold text-on-surface">{member.full_name}</span>
+                          <span className="font-bold text-slate-700">{member.full_name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-on-surface-variant">{member.department || 'N/A'}</td>
+                      <td className="px-6 py-4 text-slate-700-variant">{member.department || 'N/A'}</td>
                       <td className="px-6 py-4">
                         {getStatusBadge(status)}
                       </td>
@@ -132,7 +132,7 @@ export const ManagerTeam = () => {
                           {member.totalWeightage}%
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-on-surface-variant">
+                      <td className="px-6 py-4 text-sm text-slate-700-variant">
                         {member.goalSheet?.submitted_at ? new Date(member.goalSheet.submitted_at).toLocaleDateString() : '--'}
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -143,8 +143,8 @@ export const ManagerTeam = () => {
                             status === 'submitted' 
                             ? 'bg-primary text-on-primary hover:bg-primary/90 shadow-[0_0_15px_rgba(56,189,248,0.2)]'
                             : canReview
-                            ? 'bg-surface-variant text-on-surface hover:bg-white/10'
-                            : 'opacity-50 cursor-not-allowed text-outline'
+                            ? 'bg-surface-variant text-slate-700 hover:bg-slate-200'
+                            : 'opacity-50 cursor-not-allowed text-slate-400'
                           }`}
                         >
                           {status === 'submitted' ? 'Review Goals' : 'View'}

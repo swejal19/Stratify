@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS (Hackathon setup for pixel-perfect Stitch UI match) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
       tailwind.config = {
@@ -20,58 +20,50 @@
         theme: {
           extend: {
             "colors": {
-              "on-primary-fixed-variant": "#004395",
-              "error": "#ffb4ab",
-              "surface-tint": "#adc6ff",
-              "on-secondary": "#213145",
-              "inverse-primary": "#005ac2",
-              "tertiary-fixed": "#6ffbbe",
-              "secondary-fixed-dim": "#b7c8e1",
-              "tertiary": "#4edea3",
-              "surface-container-low": "#161b2b",
-              "outline-variant": "#424754",
-              "surface-dim": "#0e1322",
-              "surface-container-lowest": "#090e1c",
-              "on-tertiary-fixed": "#002113",
-              "surface": "#0e1322",
-              "error-container": "#93000a",
-              "on-error": "#690005",
-              "inverse-surface": "#dee1f7",
-              "on-primary": "#002e6a",
-              "primary-fixed-dim": "#adc6ff",
-              "tertiary-container": "#00a572",
-              "on-tertiary-fixed-variant": "#005236",
-              "outline": "#8c909f",
-              "on-background": "#dee1f7",
-              "surface-variant": "#2f3445",
-              "primary-fixed": "#d8e2ff",
-              "on-secondary-fixed": "#0b1c30",
-              "surface-container-highest": "#2f3445",
-              "surface-bright": "#343949",
-              "secondary": "#b7c8e1",
-              "surface-container": "#1a1f2f",
-              "on-surface": "#dee1f7",
-              "on-primary-container": "#00285d",
-              "secondary-fixed": "#d3e4fe",
-              "on-tertiary-container": "#00311f",
-              "background": "#0e1322",
-              "primary-container": "#4d8eff",
-              "on-secondary-container": "#a9bad3",
-              "on-surface-variant": "#c2c6d6",
-              "on-error-container": "#ffdad6",
-              "on-secondary-fixed-variant": "#38485d",
-              "primary": "#adc6ff",
-              "secondary-container": "#3a4a5f",
-              "surface-container-high": "#25293a",
-              "on-primary-fixed": "#001a42",
-              "tertiary-fixed-dim": "#4edea3",
-              "inverse-on-surface": "#2b3040",
-              "on-tertiary": "#003824"
+              "primary": "#006397",
+              "secondary": "#005582",
+              "success": "#10B981",
+              "warning": "#F59E0B",
+              "error": "#EF4444",
+              "error-container": "#FEE2E2",
+              "on-error-container": "#991B1B",
+              "on-error": "#FFFFFF",
+              "background": "#FFFFFF",
+              "surface": "#FFFFFF",
+              "surface-container": "#F1F5F9",
+              "surface-container-lowest": "#FFFFFF",
+              "surface-container-low": "#F1F5F9",
+              "surface-container-high": "#E2E8F0",
+              "surface-container-highest": "#E2E8F0",
+              "surface-dim": "#F1F5F9",
+              "surface-bright": "#FFFFFF",
+              "surface-variant": "#F1F5F9",
+              "on-background": "#374151",
+              "on-surface": "#374151",
+              "on-surface-variant": "#6B7280",
+              "on-primary": "#FFFFFF",
+              "on-secondary": "#FFFFFF",
+              "outline": "#E5E7EB",
+              "outline-variant": "#E5E7EB",
+              "tertiary": "#10B981",
+              "tertiary-container": "#ECFDF5",
+              "on-tertiary-container": "#047857",
+              "primary-container": "#E0F2FE",
+              "on-primary-container": "#006397",
+              "secondary-container": "#E0F2FE",
+              "on-secondary-container": "#005582",
+              "inverse-surface": "#111827",
+              "inverse-on-surface": "#FFFFFF",
+              "on-surface-muted": "#6B7280"
             },
             "borderRadius": {
-              "DEFAULT": "0.25rem",
-              "lg": "0.5rem",
-              "xl": "0.75rem",
+              "DEFAULT": "24px",
+              "sm": "8px",
+              "md": "12px",
+              "lg": "16px",
+              "xl": "20px",
+              "2xl": "24px",
+              "3xl": "24px",
               "full": "9999px"
             },
             "spacing": {
@@ -113,14 +105,14 @@
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
       .glass-panel {
-        background: rgba(22, 27, 44, 0.6);
+        background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.06);
       }
       @keyframes float {
         0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(1deg); }
+        50% { transform: translateY(-12px) rotate(0.5deg); }
       }
       .animate-float {
         animation: float 6s ease-in-out infinite;
@@ -128,19 +120,16 @@
       .animate-float-delayed {
         animation: float 8s ease-in-out infinite -2s;
       }
-      /* Optional scroll animations to keep the feel from before */
-      .fade-in-view {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      h1, h2, h3, h4, h5, h6 {
+        color: #111827;
       }
-      .fade-in-view.is-visible {
-        opacity: 1;
-        transform: translateY(0);
+      body {
+        color: #374151;
+        background-color: #FFFFFF;
       }
     </style>
   </head>
-  <body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container font-body-md overflow-x-hidden">
+  <body class="bg-background text-on-background selection:bg-primary/20 selection:text-primary font-body-md overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

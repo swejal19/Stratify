@@ -43,10 +43,10 @@ export const EmployeeDashboard = () => {
 
   if (!cycle) {
     return (
-      <div className="p-8 text-center bg-surface-container rounded-2xl border border-white/5">
+      <div className="p-8 text-center bg-surface-container rounded-2xl border border-outline">
         <span className="material-symbols-outlined text-warning text-4xl mb-4">warning</span>
-        <h2 className="text-xl font-bold text-on-surface">No Active Cycle</h2>
-        <p className="text-on-surface-variant mt-2">There is currently no active goal setting cycle open.</p>
+        <h2 className="text-xl font-bold text-slate-700">No Active Cycle</h2>
+        <p className="text-slate-700-variant mt-2">There is currently no active goal setting cycle open.</p>
       </div>
     );
   }
@@ -163,7 +163,7 @@ export const EmployeeDashboard = () => {
     switch(s) {
       case 'submitted': return { color: 'text-tertiary bg-tertiary/10 border-tertiary/20', label: 'Submitted' };
       case 'approved': return { color: 'text-success bg-success/10 border-success/20', label: 'Approved' };
-      case 'locked': return { color: 'text-on-surface bg-surface-variant border-outline', label: 'Locked' };
+      case 'locked': return { color: 'text-slate-700 bg-surface-variant border-outline', label: 'Locked' };
       case 'rework': return { color: 'text-warning bg-warning/10 border-warning/20', label: 'Rework Required' };
       default: return { color: 'text-primary bg-primary/10 border-primary/20', label: 'Draft' };
     }
@@ -182,10 +182,10 @@ export const EmployeeDashboard = () => {
       )}
 
       {/* TOP SECTION: Status Bar */}
-      <div className="bg-surface-container p-6 rounded-2xl border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-surface-container p-6 rounded-2xl border border-outline flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-display-md font-bold text-on-surface">{cycle.name}</h1>
-          <p className="text-on-surface-variant font-body-md mt-1">Goal Setting & Tracking</p>
+          <h1 className="text-3xl font-display-md font-bold text-slate-700">{cycle.name}</h1>
+          <p className="text-slate-700-variant font-body-md mt-1">Goal Setting & Tracking</p>
         </div>
         <div className={`px-4 py-2 rounded-full border text-sm font-bold tracking-wider uppercase ${statusConfig.color} flex items-center gap-2`}>
           <span className="w-2 h-2 rounded-full bg-current"></span>
@@ -212,17 +212,17 @@ export const EmployeeDashboard = () => {
       )}
 
       {/* MIDDLE SECTION: Weightage Tracker */}
-      <div className="bg-surface-container-lowest p-6 rounded-2xl border border-white/5">
+      <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline">
         <div className="flex justify-between items-end mb-4">
           <div>
-            <h2 className="text-lg font-bold text-on-surface">Weightage Allocation</h2>
-            <p className="text-on-surface-variant text-sm mt-1">{goals?.length || 0} of 8 goals added</p>
+            <h2 className="text-lg font-bold text-slate-700">Weightage Allocation</h2>
+            <p className="text-slate-700-variant text-sm mt-1">{goals?.length || 0} of 8 goals added</p>
           </div>
           <div className="text-right">
             <span className={`text-2xl font-bold ${isComplete ? 'text-success' : isOver ? 'text-error' : 'text-primary'}`}>
               {totalWeightage}%
             </span>
-            <span className="text-on-surface-variant text-sm ml-1">of 100% allocated</span>
+            <span className="text-slate-700-variant text-sm ml-1">of 100% allocated</span>
           </div>
         </div>
         
@@ -239,7 +239,7 @@ export const EmployeeDashboard = () => {
       {/* MAIN SECTION: Goals List */}
       <div className="space-y-4">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-on-surface">Your Objectives</h2>
+          <h2 className="text-xl font-bold text-slate-700">Your Objectives</h2>
           {isEditable && (goals?.length || 0) < 8 && (
             <button 
               onClick={openAddModal}
@@ -252,14 +252,14 @@ export const EmployeeDashboard = () => {
         </div>
 
         {goals?.length === 0 ? (
-          <div className="text-center py-16 bg-surface-container-lowest border border-dashed border-white/10 rounded-2xl">
-            <span className="material-symbols-outlined text-4xl text-outline mb-4">target</span>
-            <p className="text-on-surface-variant">No goals added yet. Click "Add Goal" to get started.</p>
+          <div className="text-center py-16 bg-surface-container-lowest border border-dashed border-outline rounded-2xl">
+            <span className="material-symbols-outlined text-4xl text-slate-400 mb-4">target</span>
+            <p className="text-slate-700-variant">No goals added yet. Click "Add Goal" to get started.</p>
           </div>
         ) : (
           <div className="grid gap-4">
             {goals?.map(goal => (
-              <div key={goal.id} className="bg-surface-container p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors flex flex-col md:flex-row gap-6 relative group animate-fade-in">
+              <div key={goal.id} className="bg-surface-container p-6 rounded-2xl border border-outline hover:border-outline transition-colors flex flex-col md:flex-row gap-6 relative group animate-fade-in">
                 
                 {/* Weightage Circle */}
                 <div className="hidden md:flex shrink-0 w-16 h-16 rounded-full bg-primary/10 border border-primary/20 items-center justify-center flex-col">
@@ -268,7 +268,7 @@ export const EmployeeDashboard = () => {
 
                 <div className="flex-1 space-y-3">
                   <div className="flex items-center gap-3 flex-wrap">
-                    <span className="px-3 py-1 bg-surface-variant text-on-surface-variant text-xs font-bold rounded-md uppercase tracking-wider">
+                    <span className="px-3 py-1 bg-surface-variant text-slate-700-variant text-xs font-bold rounded-md uppercase tracking-wider">
                       {goal.thrust_area}
                     </span>
                     {goal.is_shared && (
@@ -277,8 +277,8 @@ export const EmployeeDashboard = () => {
                           <span className="material-symbols-outlined text-[14px]">lock</span>
                           Shared
                         </span>
-                        <div className="absolute bottom-full left-0 mb-2 w-64 p-3 bg-surface-container-lowest border border-white/10 rounded-xl shadow-2xl text-xs text-on-surface-variant z-50 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none">
-                          <strong className="text-on-surface">Shared Goal</strong>
+                        <div className="absolute bottom-full left-0 mb-2 w-64 p-3 bg-surface-container-lowest border border-outline rounded-xl shadow-2xl text-xs text-slate-700-variant z-50 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none">
+                          <strong className="text-slate-700">Shared Goal</strong>
                           <p className="mt-1">Title, description, and target are locked. Contact your manager to modify these fields.</p>
                         </div>
                       </div>
@@ -286,27 +286,27 @@ export const EmployeeDashboard = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-bold text-on-surface">{goal.title}</h3>
-                    <p className="text-on-surface-variant text-sm mt-1 leading-relaxed">{goal.description}</p>
+                    <h3 className="text-lg font-bold text-slate-700">{goal.title}</h3>
+                    <p className="text-slate-700-variant text-sm mt-1 leading-relaxed">{goal.description}</p>
                   </div>
 
                   <div className="flex flex-wrap gap-4 pt-2">
-                    <div className="flex items-center gap-2 text-sm text-outline">
+                    <div className="flex items-center gap-2 text-sm text-slate-400">
                       <span className="material-symbols-outlined text-[18px]">straighten</span>
-                      Type: <span className="text-on-surface-variant font-medium">{goal.uom?.replace('_', ' ')}</span>
+                      Type: <span className="text-slate-700-variant font-medium">{goal.uom?.replace('_', ' ')}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-outline">
+                    <div className="flex items-center gap-2 text-sm text-slate-400">
                       <span className="material-symbols-outlined text-[18px]">flag</span>
-                      Target: <span className="text-on-surface-variant font-medium font-mono">
+                      Target: <span className="text-slate-700-variant font-medium font-mono">
                         {goal.uom === 'timeline' 
                           ? (goal.target_date ? new Date(goal.target_date + 'T00:00:00').toLocaleDateString('en-GB') : '--') 
                           : (goal.uom === 'zero' ? 'Zero' : goal.target)}
                       </span>
                     </div>
                     {/* Mobile Weightage display */}
-                    <div className="md:hidden flex items-center gap-2 text-sm text-outline">
+                    <div className="md:hidden flex items-center gap-2 text-sm text-slate-400">
                       <span className="material-symbols-outlined text-[18px]">scale</span>
-                      Weightage: <span className="text-on-surface-variant font-medium font-mono">{goal.weightage}%</span>
+                      Weightage: <span className="text-slate-700-variant font-medium font-mono">{goal.weightage}%</span>
                     </div>
                   </div>
                 </div>
@@ -335,13 +335,13 @@ export const EmployeeDashboard = () => {
                   <div className="flex md:flex-col gap-2 shrink-0 md:opacity-0 group-hover:opacity-100 transition-opacity">
                     <button 
                       onClick={() => openEditModal(goal)}
-                      className="p-2 text-outline hover:text-primary bg-surface-variant hover:bg-primary/10 rounded-lg transition-colors"
+                      className="p-2 text-slate-400 hover:text-primary bg-surface-variant hover:bg-primary/10 rounded-lg transition-colors"
                     >
                       <span className="material-symbols-outlined text-[20px]">edit</span>
                     </button>
                     <button 
                       onClick={() => handleDelete(goal.id)}
-                      className="p-2 text-outline hover:text-error bg-surface-variant hover:bg-error/10 rounded-lg transition-colors"
+                      className="p-2 text-slate-400 hover:text-error bg-surface-variant hover:bg-error/10 rounded-lg transition-colors"
                     >
                       <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
@@ -361,7 +361,7 @@ export const EmployeeDashboard = () => {
           className={`px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3 transition-all ${
             canSubmit 
             ? 'bg-success hover:bg-success/90 text-on-primary shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] cursor-pointer' 
-            : 'bg-surface-variant text-outline cursor-not-allowed'
+            : 'bg-surface-variant text-slate-400 cursor-not-allowed'
           }`}
           title={!isComplete ? "Weightage must exactly equal 100%" : "Submit goals for manager approval"}
         >
@@ -377,11 +377,11 @@ export const EmployeeDashboard = () => {
       {/* Add Goal Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-surface-container-lowest border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div className="bg-surface-container-lowest border border-outline w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             
-            <div className="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-surface-container">
-              <h2 className="text-xl font-bold text-on-surface">{editingGoalId ? 'Edit Goal' : 'Add New Goal'}</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-outline hover:text-on-surface">
+            <div className="px-6 py-4 border-b border-outline flex justify-between items-center bg-surface-container">
+              <h2 className="text-xl font-bold text-slate-700">{editingGoalId ? 'Edit Goal' : 'Add New Goal'}</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-700">
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
@@ -390,38 +390,38 @@ export const EmployeeDashboard = () => {
               <form id="addGoalForm" onSubmit={handleSaveGoal} className="space-y-5">
                 
                 <div className="space-y-2">
-                  <label className="font-label-md text-on-surface block">Thrust Area</label>
+                  <label className="font-label-md text-slate-700 block">Thrust Area</label>
                   <input 
                     required value={thrustArea} onChange={(e) => setThrustArea(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="e.g. Revenue, Customer Success, Engineering"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="font-label-md text-on-surface block">Goal Title</label>
+                  <label className="font-label-md text-slate-700 block">Goal Title</label>
                   <input 
                     required value={title} onChange={(e) => setTitle(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="What do you want to achieve?"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="font-label-md text-on-surface block">Description (Optional)</label>
+                  <label className="font-label-md text-slate-700 block">Description (Optional)</label>
                   <textarea 
                     value={description} onChange={(e) => setDescription(e.target.value)} rows="3"
-                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="Provide details on how this will be measured..."
                   ></textarea>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="font-label-md text-on-surface block">Unit of Measurement (UoM)</label>
+                    <label className="font-label-md text-slate-700 block">Unit of Measurement (UoM)</label>
                     <select 
                       value={uomType} onChange={(e) => setUomType(e.target.value)}
-                      className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary appearance-none"
+                      className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary appearance-none"
                     >
                       <option value="numeric_min">Numeric (Higher is Better)</option>
                       <option value="numeric_max">Numeric (Lower is Better)</option>
@@ -431,25 +431,25 @@ export const EmployeeDashboard = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="font-label-md text-on-surface block">Target Value</label>
+                    <label className="font-label-md text-slate-700 block">Target Value</label>
                     <input 
                       required type={uomType === 'timeline' ? 'date' : 'number'}
                       value={targetValue} onChange={(e) => setTargetValue(e.target.value)}
-                      className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                      className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                       placeholder="e.g. 100"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="font-label-md text-on-surface block">Weightage (%)</label>
+                  <label className="font-label-md text-slate-700 block">Weightage (%)</label>
                   <input 
                     required type="number" min="10" max="100"
                     value={weightage} onChange={(e) => setWeightage(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary"
+                    className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-slate-700 focus:border-primary focus:ring-1 focus:ring-primary"
                     placeholder="Min 10%"
                   />
-                  <p className="text-xs text-outline-variant mt-1">
+                  <p className="text-xs text-slate-400-variant mt-1">
                     Remaining available: {remainingWeightage}%
                   </p>
                 </div>
@@ -457,11 +457,11 @@ export const EmployeeDashboard = () => {
               </form>
             </div>
 
-            <div className="px-6 py-4 border-t border-white/5 bg-surface-container flex justify-end gap-3 shrink-0">
+            <div className="px-6 py-4 border-t border-outline bg-surface-container flex justify-end gap-3 shrink-0">
               <button 
                 type="button" 
                 onClick={() => setIsModalOpen(false)}
-                className="px-5 py-2.5 rounded-lg font-bold text-on-surface-variant hover:bg-surface-variant transition-colors"
+                className="px-5 py-2.5 rounded-lg font-bold text-slate-700-variant hover:bg-surface-variant transition-colors"
               >
                 Cancel
               </button>
