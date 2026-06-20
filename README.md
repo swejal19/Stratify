@@ -1,5 +1,4 @@
 # Stratify — Goal Setting & Tracking Portal
-### AtomQuest Hackathon 1.0 Submission
 
 ## 🎯 Overview
 Stratify is a unified In-House Goal Setting & Tracking 
