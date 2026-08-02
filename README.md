@@ -1,5 +1,4 @@
 # Stratify — Goal Setting & Tracking Portal
-### AtomQuest Hackathon 1.0 Submission
 
 ## 🎯 Overview
 Stratify is a unified In-House Goal Setting & Tracking 
@@ -10,9 +9,9 @@ quarterly check-ins and performance visibility.
 
 ## 🏗️ Architecture
 - Frontend: React + Vite (SPA)
-- Backend: Supabase (PostgreSQL + Auth + RLS)
+- Backend: Supabase (Auth + RLS)
+- Database: PostgreSQL on Supabase
 - Hosting: Vercel (CDN)
-- UI: Stitch Design System
 
 ## 👥 User Roles
 | Role | Capabilities |
@@ -94,11 +93,14 @@ Overall Score = Σ (Goal Weightage% × Goal Score)
 - No hardcoded credentials in source code
 
 ## 📁 Project Structure
+
+```text
 src/
-  components/     — Reusable UI components
-  context/        — Auth and Toast context
-  hooks/          — React Query data hooks
-  pages/          — Page components by role
-  utils/          — Score calculation utilities
-  lib/            — Supabase client
+├── components/   # Reusable UI components
+├── context/      # Auth and Toast context
+├── hooks/        # React Query data hooks
+├── pages/        # Page components by role
+├── utils/        # Score calculation utilities
+└── lib/          # Supabase client
+```
 
