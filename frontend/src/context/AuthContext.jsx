@@ -1,72 +1,50 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 
 const AuthContext = createContext({});
 
+const TOKEN_KEY = 'stratify_token';
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);     // full profile object from /api/auth/me
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ── Restore session on mount ──────────────────────────────────────────────
   useEffect(() => {
-    // Get current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        fetchProfile(currentUser.id);
-      } else {
-        setLoading(false);
-      }
-    });
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        if (currentUser) {
-          fetchProfile(currentUser.id);
-        } else {
-          setProfile(null);
-          setLoading(false);
-        }
-      }
-    );
-
-    return () => {
-      subscription?.unsubscribe();
-    };
+    api.get('/auth/me')
+      .then(({ data }) => {
+        setUser(data);
+        setProfile(data);
+      })
+      .catch(() => {
+        // Token is expired or invalid — clear it
+        localStorage.removeItem(TOKEN_KEY);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const fetchProfile = async (userId) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        // HACKATHON FALLBACK: If Supabase throws a 500 error (like RLS recursion),
-        // we default to an admin profile so you aren't permanently blocked from building.
-        setProfile({ id: userId, role: 'admin', full_name: 'Demo Admin' });
-      } else {
-        setProfile(data);
-      }
-    } catch (error) {
-      setProfile({ id: userId, role: 'admin', full_name: 'Demo Admin' });
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // ── Sign In ───────────────────────────────────────────────────────────────
   const signIn = async ({ email, password }) => {
-    return await supabase.auth.signInWithPassword({ email, password });
+    const result = await api.post('/auth/login', { email, password });
+    // result = { success, token, user }
+    localStorage.setItem(TOKEN_KEY, result.token);
+    setUser(result.user);
+    setProfile(result.user);
+    return result;
   };
 
+  // ── Sign Out ──────────────────────────────────────────────────────────────
   const signOut = async () => {
-    return await supabase.auth.signOut();
+    localStorage.removeItem(TOKEN_KEY);
+    setUser(null);
+    setProfile(null);
   };
 
   return (
@@ -76,6 +54,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { supabase } from '../lib/supabase';
 
 const DEMO_ROLES = [
   {
@@ -58,32 +57,21 @@ export const LoginPage = () => {
     setLoading(true);
     setError(null);
 
-    const { error: signInError, data } = await signIn({ email, password });
-
-    if (signInError) {
-      setError(signInError.message);
+    try {
+      const result = await signIn({ email, password });
+      // result.user already contains role from the backend response
+      const role = result.user?.role;
+      if (role === 'admin') {
+        navigate('/admin');
+      } else if (role === 'manager') {
+        navigate('/manager');
+      } else {
+        navigate('/employee');
+      }
+    } catch (err) {
+      setError(err?.message || 'Invalid credentials');
+    } finally {
       setLoading(false);
-    } else {
-      // Wait briefly for auth/session to settle
-      setTimeout(async () => {
-        const { data: profileData } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', data.user.id)
-          .single();
-
-        const role = profileData?.role;
-
-        if (role === 'admin') {
-          navigate('/admin');
-        } else if (role === 'manager') {
-          navigate('/manager');
-        } else {
-          navigate('/employee');
-        }
-
-        setLoading(false);
-      }, 500);
     }
   };
 

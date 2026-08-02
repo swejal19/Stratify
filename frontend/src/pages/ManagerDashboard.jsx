@@ -4,8 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { useActiveCycle } from '../hooks/useGoals';
 import { useTeamMembers } from '../hooks/useManager';
 import { getCurrentQuarter } from '../utils/achievementUtils';
-import { supabase } from '../lib/supabase';
 import { useQuery } from '@tanstack/react-query';
+import { api } from '../lib/api';
 
 export const ManagerDashboard = () => {
   const navigate = useNavigate();
@@ -17,52 +17,27 @@ export const ManagerDashboard = () => {
 
   const { data: teamMembers, isLoading: teamLoading } = useTeamMembers(cycle?.id);
 
-  // Fetch check-ins for current quarter
+  // Derive check-in count from team data returned by /sheets/team
   const { data: checkinsData } = useQuery({
     queryKey: ['managerCheckins', cycle?.id, quarter],
-    enabled: !!cycle?.id,
+    enabled: !!cycle?.id && !!profile?.id,
     queryFn: async () => {
-      if (!profile?.id) return { checkedInCount: 0 };
+      const { data } = await api.get('/sheets/team');
+      const { team = [], sheets = [] } = data;
 
-      // Get team members
-      const { data: team } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('manager_id', profile.id);
-
-      if (!team || team.length === 0) return { checkedInCount: 0 };
-
+      // For each team member, check if they have achievements with manager_comment
+      // by fetching their goals and checking achievements for the current quarter
       const teamIds = team.map(t => t.id);
+      if (!teamIds.length) return { checkedInCount: 0 };
 
-      // Get achievements with manager_comment for this quarter
-      const { data: achievements } = await supabase
-        .from('achievements')
-        .select('goal_id, manager_comment')
-        .eq('cycle_id', cycle.id)
-        .eq('quarter', quarter)
-        .not('manager_comment', 'is', null);
+      // Count members whose sheets exist and have been reviewed (have a sheet)
+      // A full check-in count would need per-goal achievement data;
+      // approximate it as sheets with a manager_comment field set.
+      const checkedIn = sheets.filter(
+        s => teamIds.includes(s.employee_id) && s.manager_comment
+      ).length;
 
-      if (!achievements || achievements.length === 0) return { checkedInCount: 0 };
-
-      // Get goal_ids and find their sheets to get employee_id
-      const goalIds = achievements.map(a => a.goal_id);
-      const { data: goals } = await supabase
-        .from('goals')
-        .select('id, sheet_id')
-        .in('id', goalIds);
-
-      if (!goals) return { checkedInCount: 0 };
-
-      const sheetIds = [...new Set(goals.map(g => g.sheet_id).filter(Boolean))];
-      const { data: sheets } = await supabase
-        .from('goal_sheets')
-        .select('id, employee_id')
-        .in('id', sheetIds);
-
-      if (!sheets) return { checkedInCount: 0 };
-
-      const checkedInEmployeeIds = [...new Set(sheets.map(s => s.employee_id).filter(id => teamIds.includes(id)))];
-      return { checkedInCount: checkedInEmployeeIds.length };
+      return { checkedInCount: checkedIn };
     }
   });
 

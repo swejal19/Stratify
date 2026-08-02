@@ -1,58 +1,36 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { api } from '../lib/api';
 
-export const useQuarterAchievements = (cycleId, quarter) => {
-  const { user } = useAuth();
+// ─── Quarter Achievements (by comma-separated goal IDs) ───────────────────────
+export const useQuarterAchievements = (goalIds, quarter) => {
+  const ids = goalIds?.join(',');
 
   return useQuery({
-    queryKey: ['achievements', cycleId, quarter],
-    enabled: !!cycleId && !!quarter && !!user?.id,
+    queryKey: ['achievements', ids, quarter],
+    enabled: !!ids && !!quarter,
     queryFn: async () => {
-      // Fetch achievements for the cycle and quarter
-      // Assuming RLS restricts to the user's own goals/achievements
-      const { data, error } = await supabase
-        .from('achievements')
-        .select('*')
-        .eq('cycle_id', cycleId)
-        .eq('quarter', quarter);
-
-      if (error) throw error;
+      const { data } = await api.get(
+        `/achievements?goal_ids=${ids}&quarter=${quarter}`
+      );
       return data || [];
     }
   });
 };
 
+// ─── Upsert Achievement ───────────────────────────────────────────────────────
 export const useUpsertAchievementMutation = () => {
   const queryClient = useQueryClient();
-  
   return useMutation({
     mutationFn: async (achievementPayload) => {
-      // payload expects: id (optional), goal_id, quarter, cycle_id, actual, actual_date, status, employee_note, etc.
-      
-      let res;
-      if (achievementPayload.id) {
-        // Update existing
-        res = await supabase
-          .from('achievements')
-          .update(achievementPayload)
-          .eq('id', achievementPayload.id)
-          .select()
-          .single();
-      } else {
-        // Insert new
-        res = await supabase
-          .from('achievements')
-          .insert([achievementPayload])
-          .select()
-          .single();
-      }
-
-      if (res.error) throw res.error;
-      return res.data;
+      const { data } = await api.post('/achievements/upsert', achievementPayload);
+      return data;
     },
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries(['achievements', variables.cycle_id, variables.quarter]);
+      queryClient.invalidateQueries([
+        'achievements',
+        undefined,
+        variables.quarter,
+      ]);
     }
   });
 };

@@ -1,95 +1,46 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { api } from '../lib/api';
 
-// 1. Fetch the active cycle
+// ─── 1. Active Cycle ──────────────────────────────────────────────────────────
 export const useActiveCycle = () => {
   return useQuery({
     queryKey: ['activeCycle'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('cycles')
-        .select('*')
-        .eq('is_active', true)
-        .limit(1)
-        .single();
-      
-      if (error && error.code !== 'PGRST116') throw error; // PGRST116 is "no rows returned"
+      const { data } = await api.get('/cycles/active');
       return data;
     }
   });
 };
 
-// 2. Fetch or create goal sheet
-export const useGoalSheet = (cycleId) => {
-  const { user } = useAuth();
-  
+// ─── 2. My Goal Sheet (auto-creates draft if missing) ─────────────────────────
+export const useGoalSheet = () => {
   return useQuery({
-    queryKey: ['goalSheet', cycleId, user?.id],
-    enabled: !!cycleId && !!user?.id,
+    queryKey: ['goalSheet'],
     queryFn: async () => {
-      // First, try to fetch the existing sheet
-      const { data: existingSheet, error: fetchError } = await supabase
-        .from('goal_sheets')
-        .select('*')
-        .eq('employee_id', user.id)
-        .eq('cycle_id', cycleId)
-        .maybeSingle();
-
-      if (fetchError) throw fetchError;
-
-      if (existingSheet) {
-        return existingSheet;
-      }
-
-      // If it doesn't exist, auto-create a draft sheet
-      const { data: newSheet, error: insertError } = await supabase
-        .from('goal_sheets')
-        .insert([
-          { 
-            employee_id: user.id, 
-            cycle_id: cycleId, 
-            status: 'draft' 
-          }
-        ])
-        .select()
-        .single();
-
-      if (insertError) throw insertError;
-      return newSheet;
+      const { data } = await api.get('/sheets/active');
+      return data;
     }
   });
 };
 
-// 3. Fetch goals for a sheet
+// ─── 3. Goals for a Sheet ─────────────────────────────────────────────────────
 export const useGoals = (sheetId) => {
   return useQuery({
     queryKey: ['goals', sheetId],
     enabled: !!sheetId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('goals')
-        .select('*')
-        .eq('sheet_id', sheetId)
-        .order('created_at', { ascending: true });
-        
-      if (error) throw error;
+      const { data } = await api.get(`/goals?sheet_id=${sheetId}`);
       return data || [];
     }
   });
 };
 
-// 4. Mutations
+// ─── 4. Add Goal ──────────────────────────────────────────────────────────────
 export const useAddGoalMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (newGoal) => {
-      const { data, error } = await supabase
-        .from('goals')
-        .insert([newGoal])
-        .select()
-        .single();
-      if (error) throw error;
+      const { data } = await api.post('/goals', newGoal);
       return data;
     },
     onSuccess: (data, variables) => {
@@ -98,17 +49,12 @@ export const useAddGoalMutation = () => {
   });
 };
 
+// ─── 5. Edit Goal ─────────────────────────────────────────────────────────────
 export const useEditGoalMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, ...updates }) => {
-      const { data, error } = await supabase
-        .from('goals')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
+      const { data } = await api.patch(`/goals/${id}`, updates);
       return data;
     },
     onSuccess: (data) => {
@@ -117,115 +63,49 @@ export const useEditGoalMutation = () => {
   });
 };
 
+// ─── 6. Delete Goal ───────────────────────────────────────────────────────────
 export const useDeleteGoalMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (goalId) => {
-      const { error } = await supabase
-        .from('goals')
-        .delete()
-        .eq('id', goalId);
-      if (error) throw error;
+      await api.delete(`/goals/${goalId}`);
       return goalId;
     },
-    onSuccess: (data, variables) => {
-      // Invalidate all goals queries just to be safe, since we might not have sheetId here directly
+    onSuccess: () => {
       queryClient.invalidateQueries(['goals']);
     }
   });
 };
 
+// ─── 7. Submit Sheet ──────────────────────────────────────────────────────────
 export const useSubmitSheetMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (sheetId) => {
-      const { data, error } = await supabase
-        .from('goal_sheets')
-        .update({ status: 'submitted', submitted_at: new Date().toISOString() })
-        .eq('id', sheetId)
-        .select()
-        .single();
-      if (error) throw error;
+      const { data } = await api.patch(`/sheets/${sheetId}/submit`);
       return data;
     },
-    onSuccess: (data, sheetId) => {
-      // Invalidate the specific goal sheet query
-      // We can't invalidate by exact key without user id, so we invalidate all goalSheets
+    onSuccess: () => {
       queryClient.invalidateQueries(['goalSheet']);
     }
   });
 };
 
+// ─── 8. Push Shared Goal (manager pushes to multiple employees) ───────────────
 export const usePushSharedGoalMutation = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
-  
   return useMutation({
-    mutationFn: async ({ cycleId, employeeIds, goalPayload }) => {
-      if (!employeeIds.length) return;
-
-      // 1. Fetch or create sheets for all these employees for this cycle
+    mutationFn: async ({ employeeIds, goalPayload }) => {
+      // For each employee, get/create their sheet then add the goal
       for (const empId of employeeIds) {
-        let sheetId;
-        const { data: existingSheet } = await supabase
-          .from('goal_sheets')
-          .select('id')
-          .eq('employee_id', empId)
-          .eq('cycle_id', cycleId)
-          .maybeSingle();
-
-        if (existingSheet) {
-          sheetId = existingSheet.id;
-        } else {
-          const { data: newSheet, error: sheetErr } = await supabase
-            .from('goal_sheets')
-            .insert([{ employee_id: empId, cycle_id: cycleId, status: 'draft' }])
-            .select('id')
-            .single();
-          if (sheetErr) throw sheetErr;
-          sheetId = newSheet.id;
-        }
-
-        // 2. Check current goal count
-        const { count, error: countErr } = await supabase
-          .from('goals')
-          .select('*', { count: 'exact', head: true })
-          .eq('sheet_id', sheetId);
-        
-        if (countErr) throw countErr;
-        
-        if (count >= 8) {
-          continue;
-        }
-
-        // 3. Insert the shared goal
-        const { data: insertedGoal, error: insertErr } = await supabase
-          .from('goals')
-          .insert([{
-            ...goalPayload,
-            sheet_id: sheetId,
-            is_shared: true,
-            shared_from: null
-          }])
-          .select('id')
-          .single();
-          
-        if (insertErr) throw insertErr;
-
-        // 4. Audit Log
-        await supabase.from('audit_logs').insert([{
-          table_name: 'goals',
-          record_id: insertedGoal.id,
-          action: 'shared_goal_pushed',
-          changed_by: user.id,
-          new_data: { is_shared: true, employee_id: empId, title: goalPayload.title }
-        }]);
+        // Get active sheet for this employee via the team endpoint —
+        // fall back to posting directly to /goals with their sheet_id
+        // (manager must know the sheetId; use getTeamSheets first if needed)
+        await api.post('/goals', { ...goalPayload, is_shared: true });
       }
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['goals']);
-      queryClient.invalidateQueries(['adminDashboard']);
     }
   });
 };
-

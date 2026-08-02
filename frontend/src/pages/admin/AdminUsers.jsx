@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAllProfiles, useUpdateProfileMutation, useAdminUnlockGoalsMutation } from '../../hooks/useAdmin';
 import { PushGoalModal } from '../../components/shared/PushGoalModal';
-import { supabase } from '../../lib/supabase';
+import { api } from '../../lib/api';
 
 export const AdminUsers = () => {
   const { data: profiles, isLoading } = useAllProfiles();
@@ -131,33 +131,15 @@ export const AdminUsers = () => {
     try {
       setIsCreatingUser(true);
 
-      // Step 1 — Create auth account
-      const { data, error } = await supabase.auth.signUp({
+      // Single backend call — server uses supabase.auth.admin.createUser + inserts profile
+      await api.post('/users', {
         email: normalizedEmail,
         password: newUserData.password,
-        options: {
-          data: {
-            full_name: normalizedFullName
-          }
-        }
+        full_name: normalizedFullName,
+        role: newUserData.role,
+        department: newUserData.department,
+        manager_id: newUserData.manager_id || null
       });
-
-      if (error) throw error;
-
-      // Step 2 — Insert profile
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({
-          id: data.user.id,
-          full_name: normalizedFullName,
-          email: normalizedEmail,
-          role: newUserData.role,
-          department: newUserData.department,
-          manager_id: newUserData.manager_id || null
-        });
-
-      if (profileError) throw profileError;
-
       showToast('User created! They can now login with their credentials.');
 
       setIsAddUserOpen(false);

@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useActiveCycle, useGoalSheet, useGoals } from '../hooks/useGoals';
 import { useQuarterAchievements } from '../hooks/useAchievements';
 import { getCurrentQuarter, calculateGoalScore } from '../utils/achievementUtils';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 
 export const EmployeeProgress = () => {
   const { data: cycle, isLoading: cycleLoading } = useActiveCycle();
-  const { data: sheet, isLoading: sheetLoading } = useGoalSheet(cycle?.id);
+  const { data: sheet, isLoading: sheetLoading } = useGoalSheet();
   const { data: goals, isLoading: goalsLoading } = useGoals(sheet?.id);
 
   const currentQuarterInfo = getCurrentQuarter(cycle);
   const quarter = currentQuarterInfo.quarter;
 
-  const { data: achievements, isLoading: achievementsLoading } = useQuarterAchievements(cycle?.id, quarter);
+  const goalIds = goals?.map(g => g.id) || [];
+  const { data: achievements, isLoading: achievementsLoading } = useQuarterAchievements(goalIds, quarter);
 
   const isLoading = cycleLoading || sheetLoading || goalsLoading || achievementsLoading;
 
@@ -148,38 +149,31 @@ export const EmployeeProgress = () => {
   const totalGoals = goals?.length || 0;
   const completedGoals = goalScores.filter(g => goalData[g.id] !== undefined).length;
 
-  // Quarter summary - check which quarters have data
+  // Quarter summary - check which quarters have data via backend
   const getQuarterStatus = async (q) => {
-    if (!cycle?.id) return { hasData: false, score: null };
+    if (!goalIds.length) return { hasData: false, score: null };
+    try {
+      const { data: achData } = await api.get(
+        `/achievements?goal_ids=${goalIds.join(',')}&quarter=${q}`
+      );
+      if (!achData || achData.length === 0) return { hasData: false, score: null };
 
-    const { data } = await supabase
-      .from('achievements')
-      .select('id, goal_id, actual, manager_comment')
-      .eq('cycle_id', cycle.id)
-      .eq('quarter', q);
-
-    if (!data || data.length === 0) return { hasData: false, score: null };
-
-    // Get goals for this employee
-    const goalIds = data.map(d => d.goal_id);
-    const { data: goalData } = await supabase
-      .from('goals')
-      .select('id, weightage')
-      .in('id', goalIds);
-
-    if (!goalData) return { hasData: true, score: null };
-
-    // Calculate score for this quarter
-    let quarterScore = 0;
-    goalData.forEach(g => {
-      const achievement = data.find(a => a.goal_id === g.id);
-      if (achievement) {
-        const s = calculateGoalScore(g.uom, g.target, g.target_date, achievement.actual, achievement.actual_date, achievement.actual === 0);
-        quarterScore += (Number(g.weightage) / 100) * s;
-      }
-    });
-
-    return { hasData: true, score: Math.round(quarterScore) };
+      let quarterScore = 0;
+      goals?.forEach(g => {
+        const achievement = achData.find(a => a.goal_id === g.id);
+        if (achievement) {
+          const s = calculateGoalScore(
+            g.uom, g.target, g.target_date,
+            achievement.actual, achievement.actual_date,
+            achievement.actual === 0
+          );
+          quarterScore += (Number(g.weightage) / 100) * s;
+        }
+      });
+      return { hasData: true, score: Math.round(quarterScore) };
+    } catch {
+      return { hasData: false, score: null };
+    }
   };
 
   // Show Q4 as active since that's the current quarter

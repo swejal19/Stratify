@@ -1,68 +1,49 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { useActiveCycle } from '../hooks/useGoals';
 import { calculateGoalScore } from '../utils/achievementUtils';
 
-// Self-contained data fetch hook for Manager Reports
-const useManagerReportData = (activeCycleId, currentUserId) => {
+const useManagerReportData = (activeCycleId) => {
   return useQuery({
-    queryKey: ['managerReport', activeCycleId, currentUserId],
-    enabled: !!activeCycleId && !!currentUserId,
+    queryKey: ['managerReport', activeCycleId],
+    enabled: !!activeCycleId,
     queryFn: async () => {
-      // Step 1: Fetch team members (employees who report to this manager)
-      const { data: teamMembers, error: tmErr } = await supabase
-        .from('profiles')
-        .select('id, full_name, department')
-        .eq('manager_id', currentUserId);
-      if (tmErr) throw tmErr;
+      // Step 1: Get team + sheets from backend
+      const { data: teamData } = await api.get('/sheets/team');
+      const { team: teamMembers = [], sheets = [] } = teamData;
 
-      if (!teamMembers || teamMembers.length === 0) {
+      if (!teamMembers.length) {
         return { teamMembers: [], sheets: [], goals: [], achievements: [] };
       }
 
-      // Step 2: Fetch their goal sheets for active cycle
-      const teamIds = teamMembers.map(t => t.id);
-      const { data: sheets, error: sErr } = await supabase
-        .from('goal_sheets')
-        .select('id, employee_id')
-        .eq('cycle_id', activeCycleId)
-        .in('employee_id', teamIds);
-      if (sErr) throw sErr;
-
-      if (!sheets || sheets.length === 0) {
+      if (!sheets.length) {
         return { teamMembers, sheets: [], goals: [], achievements: [] };
       }
 
-      // Step 3: Fetch goals
-      const sheetIds = sheets.map(s => s.id);
-      const { data: goals, error: gErr } = await supabase
-        .from('goals')
-        .select('id, sheet_id, title, uom, target, target_date, weightage, thrust_area')
-        .in('sheet_id', sheetIds);
-      if (gErr) throw gErr;
+      // Step 2: Fetch goals for each sheet
+      const allGoals = (await Promise.all(
+        sheets.map(s => api.get(`/goals?sheet_id=${s.id}`).then(r => r.data || []))
+      )).flat();
 
-      if (!goals || goals.length === 0) {
+      if (!allGoals.length) {
         return { teamMembers, sheets, goals: [], achievements: [] };
       }
 
-      // Step 4: Fetch achievements — NO cycle_id filter, just goal_id
-      const goalIds = goals.map(g => g.id);
-      const { data: achievements, error: aErr } = await supabase
-        .from('achievements')
-        .select('id, goal_id, quarter, actual, actual_date, status')
-        .in('goal_id', goalIds);
-      if (aErr) throw aErr;
-      return { teamMembers, sheets, goals, achievements: achievements || [] };
+      // Step 3: Fetch achievements for all goals
+      const goalIds = allGoals.map(g => g.id);
+      const achRes = await api.get(`/achievements?goal_ids=${goalIds.join(',')}`);
+      const achievements = achRes.data || [];
+
+      return { teamMembers, sheets, goals: allGoals, achievements };
     }
   });
 };
 
 export const ManagerReports = () => {
-  const { user } = useAuth();
   const { data: cycle, isLoading: cycleLoading } = useActiveCycle();
-  const { data: reportData, isLoading: dataLoading } = useManagerReportData(cycle?.id, user?.id);
+  const { data: reportData, isLoading: dataLoading } = useManagerReportData(cycle?.id);
 
   const isLoading = cycleLoading || dataLoading;
 
