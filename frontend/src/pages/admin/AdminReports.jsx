@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveCycle } from '../../hooks/useGoals';
 import { useReportData } from '../../hooks/useAdmin';
-import { calculateGoalScore } from '../../utils/achievementUtils';
 
 export const AdminReports = () => {
   const { data: cycle, isLoading: cycleLoading } = useActiveCycle();
@@ -25,100 +24,7 @@ export const AdminReports = () => {
     );
   }
 
-  const { profiles, sheets, goals, achievements } = reportData || {};
-
-  // Helper: format target value for display
-  const formatTarget = (goal) => {
-    if (goal.uom === 'timeline') {
-      return goal.target_date
-        ? new Date(goal.target_date + 'T00:00:00').toLocaleDateString('en-GB')
-        : '--';
-    }
-    if (goal.uom === 'zero') return 'Zero (Pass/Fail)';
-    return (goal.target !== null && goal.target !== undefined && goal.target !== '')
-      ? goal.target
-      : '--';
-  };
-
-  // Helper: format actual value for display
-  const formatActual = (ach, goal) => {
-    if (!ach) return '';
-    if (goal.uom === 'timeline') {
-      return ach.actual_date
-        ? new Date(ach.actual_date + 'T00:00:00').toLocaleDateString('en-GB')
-        : '--';
-    }
-    if (goal.uom === 'zero') return ach.actual === 0 ? 'Yes (Zero ✓)' : 'No';
-    return ach.actual !== null && ach.actual !== undefined ? ach.actual : '--';
-  };
-
-  // Build the massive reporting table
-  const rows = [];
-  
-  goals?.forEach(goal => {
-    const sheet = sheets?.find(s => s.id === goal.sheet_id);
-    if (!sheet) return;
-    
-    const employee = profiles?.find(p => p.id === sheet.employee_id);
-    if (!employee) return;
-
-    // Find achievements for Q1-Q4 — use Number() to coerce quarter in case Supabase returns string
-    const q1 = achievements?.find(a => a.goal_id === goal.id && Number(a.quarter) === 1);
-    const q2 = achievements?.find(a => a.goal_id === goal.id && Number(a.quarter) === 2);
-    const q3 = achievements?.find(a => a.goal_id === goal.id && Number(a.quarter) === 3);
-    const q4 = achievements?.find(a => a.goal_id === goal.id && Number(a.quarter) === 4);
-
-    const calcQScore = (ach) => {
-      if (!ach) return null;
-      const isZero = ach.actual === 0 && goal.uom === 'zero';
-      const raw = calculateGoalScore(
-        goal.uom, goal.target, goal.target_date,
-        ach.actual, ach.actual_date,
-        isZero
-      );
-      // Cap displayed score at 100% per spec
-      return Math.min(raw, 100);
-    };
-
-    const s1 = calcQScore(q1);
-    const s2 = calcQScore(q2);
-    const s3 = calcQScore(q3);
-    const s4 = calcQScore(q4);
-
-    // Overall = weighted average of available quarter scores for this goal
-    const validScores = [s1, s2, s3, s4].filter(s => s !== null);
-    const avgQ = validScores.length > 0
-      ? validScores.reduce((a, b) => a + b, 0) / validScores.length
-      : null;
-    // Apply goal weightage to get contribution
-    const overall = avgQ !== null ? (Number(goal.weightage) / 100) * avgQ : null;
-
-    rows.push({
-      employee: employee.full_name,
-      department: employee.department || 'N/A',
-      goal: goal.title,
-      uom: goal.uom,
-      weightage: goal.weightage,
-      target: formatTarget(goal),
-
-      q1_actual: formatActual(q1, goal),
-      q1_score: s1,
-
-      q2_actual: formatActual(q2, goal),
-      q2_score: s2,
-
-      q3_actual: formatActual(q3, goal),
-      q3_score: s3,
-
-      q4_actual: formatActual(q4, goal),
-      q4_score: s4,
-
-      overall
-    });
-  });
-
-  // Sort by Employee Name
-  rows.sort((a, b) => a.employee.localeCompare(b.employee));
+  const rows = reportData?.reports || [];
 
   const exportCSV = () => {
     if (rows.length === 0) return;
@@ -138,11 +44,11 @@ export const AdminReports = () => {
       headers.map(escapeCSV).join(','),
       ...rows.map(r => [
         r.employee, r.department, r.goal, r.uom, r.weightage, r.target,
-        r.q1_actual, r.q1_score !== null ? Math.round(r.q1_score) : '',
-        r.q2_actual, r.q2_score !== null ? Math.round(r.q2_score) : '',
-        r.q3_actual, r.q3_score !== null ? Math.round(r.q3_score) : '',
-        r.q4_actual, r.q4_score !== null ? Math.round(r.q4_score) : '',
-        r.overall !== null ? Math.round(r.overall) : ''
+        r.q1_actual, r.q1_score !== null ? Math.round(Math.min(r.q1_score, 150)) : '',
+        r.q2_actual, r.q2_score !== null ? Math.round(Math.min(r.q2_score, 150)) : '',
+        r.q3_actual, r.q3_score !== null ? Math.round(Math.min(r.q3_score, 150)) : '',
+        r.q4_actual, r.q4_score !== null ? Math.round(Math.min(r.q4_score, 150)) : '',
+        r.overall !== null ? Math.round(Math.min(r.overall, 150)) : ''
       ].map(escapeCSV).join(','))
     ].join('\n');
 
@@ -154,6 +60,19 @@ export const AdminReports = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const getScoreColorClass = (score) => {
+    if (score === null) return '';
+    const s = Math.min(score, 150);
+    if (s >= 100) return 'text-success';
+    if (s >= 50) return 'text-warning';
+    return 'text-error';
+  };
+
+  const renderScore = (score) => {
+    if (score === null) return '--';
+    return `${Math.round(Math.min(score, 150))}%`;
   };
 
   return (
@@ -212,27 +131,27 @@ export const AdminReports = () => {
                     <td className="px-4 py-3 font-mono font-bold text-slate-700 border-r border-outline bg-primary/5">{row.target || '--'}</td>
                     
                     <td className="px-4 py-3 font-mono bg-slate-100">{row.q1_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${row.q1_score !== null ? (row.q1_score >= 80 ? 'text-success' : row.q1_score >= 50 ? 'text-warning' : 'text-error') : ''}`}>
-                      {row.q1_score !== null ? `${Math.round(row.q1_score)}%` : '--'}
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${getScoreColorClass(row.q1_score)}`}>
+                      {renderScore(row.q1_score)}
                     </td>
 
                     <td className="px-4 py-3 font-mono bg-slate-50">{row.q2_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${row.q2_score !== null ? (row.q2_score >= 80 ? 'text-success' : row.q2_score >= 50 ? 'text-warning' : 'text-error') : ''}`}>
-                      {row.q2_score !== null ? `${Math.round(row.q2_score)}%` : '--'}
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${getScoreColorClass(row.q2_score)}`}>
+                      {renderScore(row.q2_score)}
                     </td>
 
                     <td className="px-4 py-3 font-mono bg-slate-100">{row.q3_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${row.q3_score !== null ? (row.q3_score >= 80 ? 'text-success' : row.q3_score >= 50 ? 'text-warning' : 'text-error') : ''}`}>
-                      {row.q3_score !== null ? `${Math.round(row.q3_score)}%` : '--'}
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-100 border-r border-outline ${getScoreColorClass(row.q3_score)}`}>
+                      {renderScore(row.q3_score)}
                     </td>
 
                     <td className="px-4 py-3 font-mono bg-slate-50">{row.q4_actual || '--'}</td>
-                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${row.q4_score !== null ? (row.q4_score >= 80 ? 'text-success' : row.q4_score >= 50 ? 'text-warning' : 'text-error') : ''}`}>
-                      {row.q4_score !== null ? `${Math.round(row.q4_score)}%` : '--'}
+                    <td className={`px-4 py-3 font-mono font-bold bg-slate-50 border-r border-outline ${getScoreColorClass(row.q4_score)}`}>
+                      {renderScore(row.q4_score)}
                     </td>
 
-                    <td className={`px-4 py-3 font-mono font-bold bg-primary/10 ${row.overall !== null ? (row.overall >= 80 ? 'text-success' : row.overall >= 50 ? 'text-warning' : 'text-error') : ''}`}>
-                      {row.overall !== null ? `${Math.round(row.overall)}%` : '--'}
+                    <td className={`px-4 py-3 font-mono font-bold bg-primary/10 ${getScoreColorClass(row.overall)}`}>
+                      {renderScore(row.overall)}
                     </td>
                   </tr>
                 ))

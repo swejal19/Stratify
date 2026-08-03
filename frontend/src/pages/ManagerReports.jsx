@@ -79,12 +79,12 @@ export const ManagerReports = () => {
       ach.actual, ach.actual_date,
       isZero
     );
-    return Math.min(raw, 100); // cap at 100%
+    return Math.min(raw, 150); // cap at 150%
   };
 
   const scoreColor = (score) => {
     if (score === null) return '';
-    if (score >= 80) return 'text-success';
+    if (score >= 100) return 'text-success';
     if (score >= 50) return 'text-warning';
     return 'text-error';
   };

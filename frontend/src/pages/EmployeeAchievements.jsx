@@ -141,13 +141,13 @@ export const EmployeeAchievements = () => {
       const actual = parseFloat(data.actual);
       const target = parseFloat(goal.target);
       if (!isNaN(actual) && !isNaN(target) && target > 0) {
-        score = Math.min((actual / target) * 100, 100);
+        score = Math.min((actual / target) * 100, 150);
       }
     } else if (goal.uom === 'numeric_max') {
       const actual = parseFloat(data.actual);
       const target = parseFloat(goal.target);
       if (!isNaN(actual) && !isNaN(target) && actual > 0) {
-        score = Math.min((target / actual) * 100, 100);
+        score = Math.min((target / actual) * 100, 150);
       }
     }
 
@@ -187,14 +187,14 @@ export const EmployeeAchievements = () => {
           <svg className="absolute inset-0 w-full h-full -rotate-90">
             <circle cx="80" cy="80" r="70" fill="none" stroke="#E5E7EB" strokeWidth="10" />
             <circle cx="80" cy="80" r="70" fill="none" stroke="currentColor" strokeWidth="10"
-              className={`transition-all duration-1000 ease-out ${overallScore >= 100 ? 'text-success' : overallScore >= 80 ? 'text-primary' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}
+              className={`transition-all duration-1000 ease-out ${overallScore >= 100 ? 'text-success' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}
               strokeDasharray="439.8"
               strokeDashoffset={439.8 - (439.8 * Math.min(overallScore, 100)) / 100}
               strokeLinecap="round"
             />
           </svg>
           <div className="text-center z-10">
-            <span className="text-4xl font-bold font-mono text-slate-700 leading-none">{Math.round(Math.min(overallScore, 100))}%</span>
+            <span className="text-4xl font-bold font-mono text-slate-700 leading-none">{Math.round(Math.min(overallScore, 150))}%</span>
             <span className="block text-[10px] uppercase text-slate-400 font-bold tracking-widest mt-1">Weighted Score</span>
           </div>
         </div>
@@ -207,7 +207,7 @@ export const EmployeeAchievements = () => {
           if (!data) return null;
 
           const score = calculateGoalScore(goal.uom, goal.target, goal.target_date, data.actual, data.actual_date, data.isZero);
-          const barColor = score >= 80 ? 'bg-success' : score >= 50 ? 'bg-warning' : 'bg-error';
+          const barColor = score >= 100 ? 'bg-success' : score >= 50 ? 'bg-warning' : 'bg-error';
 
           const isPending = upsertAchievementMutation.isPending && upsertAchievementMutation.variables?.goal_id === goal.id;
 
@@ -232,7 +232,7 @@ export const EmployeeAchievements = () => {
                 <div className="mt-6 p-4 bg-surface-container-lowest rounded-xl border border-outline">
                   <div className="flex justify-between items-end mb-2">
                     <div className="text-sm font-bold text-slate-400 uppercase tracking-wider">Computed Score</div>
-                    <div className="text-xl font-bold font-mono text-slate-700">{Math.round(Math.min(score, 100))}%</div>
+                    <div className="text-xl font-bold font-mono text-slate-700">{Math.round(Math.min(score, 150))}%</div>
                   </div>
                   <div className="h-2 bg-surface-variant rounded-full overflow-hidden">
                     <div className={`h-full transition-all duration-500 ease-out ${barColor}`} style={{ width: `${Math.min(score, 100)}%` }} />

@@ -8,10 +8,9 @@ of employee goals — from creation and approval to
 quarterly check-ins and performance visibility.
 
 ## 🏗️ Architecture
-- Frontend: React + Vite (SPA)
-- Backend: Supabase (Auth + RLS)
-- Database: PostgreSQL on Supabase
-- Hosting: Vercel (CDN)
+- **Frontend**: React + Vite (SPA)
+- **Backend**: Node.js + Express (REST API)
+- **Database**: PostgreSQL on Supabase (accessed via Service Role)
 
 ## 👥 User Roles
 | Role | Capabilities |
@@ -68,39 +67,71 @@ Overall Score = Σ (Goal Weightage% × Goal Score)
 ### Prerequisites
 - Node.js 18+
 - Supabase account
-- Vercel account
+- Vercel (for frontend) & Render (for backend) accounts
 
 ### Local Development
-1. Clone the repository
-2. Install dependencies:
-   npm install
-3. Create .env.local file:
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-4. Run development server:
-   npm run dev
+
+**1. Backend Setup**
+```bash
+cd backend
+npm install
+```
+Create `backend/.env`:
+```env
+PORT=5000
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_SERVICE_KEY=your_supabase_service_role_key
+JWT_SECRET=your_long_random_secret_key
+JWT_EXPIRES_IN=7d
+FRONTEND_URL=http://localhost:5173
+```
+Run the backend server:
+```bash
+npm run dev
+```
+
+**2. Frontend Setup**
+```bash
+cd frontend
+npm install
+```
+Create `frontend/.env.local`:
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+Run the frontend server:
+```bash
+npm run dev
+```
 
 ### Deployment
-1. Push to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy!
+1. **Backend (Render)**: Deploy the `backend` folder as a Web Service on Render. Add environment variables.
+2. **Frontend (Vercel)**: Deploy the `frontend` folder to Vercel. Set `VITE_API_URL` to your Render backend URL (e.g., `https://stratify-backend-xxxx.onrender.com/api`).
 
 ## 🛡️ Security
-- Row Level Security (RLS) enabled on all tables
-- Role-aware dashboards for Admin, Manager, and Employee workflows
-- Environment variables used for sensitive configuration
-- No hardcoded credentials in source code
+- Custom JWT-based authentication managed by the Express backend.
+- Role-aware middleware (`authorize` and `protect`) for Admin, Manager, and Employee workflows.
+- Backend connects to Supabase securely via Service Role key; database is not directly accessible from the frontend.
+- No hardcoded credentials in source code. Environment variables used for all sensitive configuration.
 
 ## 📁 Project Structure
 
 ```text
-src/
-├── components/   # Reusable UI components
-├── context/      # Auth and Toast context
-├── hooks/        # React Query data hooks
-├── pages/        # Page components by role
-├── utils/        # Score calculation utilities
-└── lib/          # Supabase client
-```
+backend/          # Node.js + Express API
+├── src/
+│   ├── config/   # DB and JWT configurations
+│   ├── controllers/# Business logic
+│   ├── middleware/# Auth, role guard, error handling
+│   ├── routes/   # Express route definitions
+│   └── utils/    # Utilities (score calculator, asyncHandler)
+└── server.js     # Entry point
 
+frontend/         # React + Vite Application
+├── src/
+│   ├── components/ # Reusable UI components
+│   ├── context/    # AuthContext for JWT management
+│   ├── hooks/      # React Query data hooks
+│   ├── pages/      # Page components by role
+│   ├── utils/      # Score calculation utilities
+│   └── lib/        # api.js for backend fetch requests
+```

@@ -1,6 +1,6 @@
 /**
  * calculateGoalScore
- * Computes a 0–100 score for a single goal based on its Unit of Measure (UoM).
+ * Computes a 0–150 score for a single goal based on its Unit of Measure (UoM).
  *
  * UoM types:
  *  - 'zero'        : Goal is to achieve zero / no occurrences.
@@ -16,29 +16,44 @@ export const calculateGoalScore = (
   actualDate,
   isZero = false
 ) => {
-  if (uom === 'zero') {
-    return isZero || actual === 0 ? 100 : 0
-  }
-
+  // Treat empty strings as null - don't calculate score without actual data saved
   if (uom === 'timeline') {
-    if (!actualDate || !targetDate) return 0
-    return new Date(actualDate + 'T00:00:00') <=
-      new Date(targetDate + 'T00:00:00')
-      ? 100
-      : 0
+    if (!actualDate) return 0;
+  } else if ((actual === '' || actual === null || actual === undefined) && !isZero) {
+    return 0;
   }
 
-  if (uom === 'numeric_min') {
-    if (!actual || !target) return 0
-    return Math.min((parseFloat(actual) / parseFloat(target)) * 100, 100)
-  }
+  const numActual = actual === '' ? 0 : Number(actual) || 0;
+  const numTarget = Number(target) || 0;
 
-  if (uom === 'numeric_max') {
-    if (!actual || !target) return 0
-    return Math.min((parseFloat(target) / parseFloat(actual)) * 100, 100)
+  switch (uom) {
+    case 'numeric_min': {
+      if (numTarget === 0) return numActual > 0 ? 150 : 0; // Avoid divide by zero
+      const score = (numActual / numTarget) * 100;
+      return Math.min(Math.max(score, 0), 150); // Cap at 150%
+    }
+    
+    case 'numeric_max': {
+      if (numActual === 0) return 150; // Achieved 0 on a minimize goal
+      const score = (numTarget / numActual) * 100;
+      return Math.min(Math.max(score, 0), 150);
+    }
+    
+    case 'timeline': {
+      if (!actualDate || !targetDate) return 0;
+      const actualD = new Date(actualDate + 'T00:00:00').getTime();
+      const targetD = new Date(targetDate + 'T00:00:00').getTime();
+      return actualD <= targetD ? 100 : 0;
+    }
+    
+    case 'zero': {
+      // Only return 100% if explicitly marked as zero (isZero), not when actual is empty
+      return isZero ? 100 : 0;
+    }
+    
+    default:
+      return 0;
   }
-
-  return 0
 }
 
 /**

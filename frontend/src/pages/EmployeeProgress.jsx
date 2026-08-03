@@ -100,7 +100,7 @@ export const EmployeeProgress = () => {
         }
       }
     }
-    const score = Math.min(rawScore, 100); // Cap at 100%
+    const score = Math.min(rawScore, 150); // Cap at 150%
 
     // Format actual value for display
     let displayActual = '--';
@@ -217,12 +217,12 @@ export const EmployeeProgress = () => {
                 strokeLinecap="round"
                 strokeDasharray={283}
                 strokeDashoffset={283 - (283 * Math.min(overallScore, 100)) / 100}
-                className={`transition-all duration-1000 ease-out ${overallScore >= 80 ? 'text-success' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}
+                className={`transition-all duration-1000 ease-out ${overallScore >= 100 ? 'text-success' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className={`text-4xl font-bold font-mono ${overallScore >= 80 ? 'text-success' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}>
-                {Math.round(Math.min(overallScore, 100))}%
+              <span className={`text-4xl font-bold font-mono ${overallScore >= 100 ? 'text-success' : overallScore >= 50 ? 'text-warning' : 'text-error'}`}>
+                {Math.round(Math.min(overallScore, 150))}%
               </span>
             </div>
           </div>

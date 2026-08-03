@@ -49,7 +49,7 @@ export const ManagerCheckins = () => {
           achievement.actual, achievement.actual_date,
           achievement.actual === 0 && goal.uom === 'zero'
         );
-        const score = Math.min(rawScore, 100);
+        const score = Math.min(rawScore, 150);
         quarterScore += (Number(goal.weightage) / 100) * score;
       }
     });
@@ -272,7 +272,7 @@ export const ManagerCheckins = () => {
                       achievement.actual === 0 && goal.uom === 'zero'
                     );
                   }
-                  const barColor = score >= 80 ? 'bg-success' : score >= 50 ? 'bg-warning' : 'bg-error';
+                  const barColor = score >= 100 ? 'bg-success' : score >= 50 ? 'bg-warning' : 'bg-error';
 
                   return (
                     <div key={goal.id} className="bg-surface-container rounded-xl p-5 border border-outline">
