@@ -17,7 +17,7 @@ export const AdminDashboard = () => {
     );
   }
 
-  const { employees, sheets, recentLogs, checkinRate } = dashboardData || {};
+  const { employees, sheets, recentLogs, analytics } = dashboardData || {};
 
   // Calculate stats
   const totalEmployees = employees?.length || 0;
@@ -29,6 +29,11 @@ export const AdminDashboard = () => {
   // Approval Rate (locked / total submitted)
   const lockedSheets = sheets?.filter(s => s.status === 'locked' || s.status === 'approved') || [];
   const approvalRate = submittedSheets.length > 0 ? (lockedSheets.length / submittedSheets.length) * 100 : 0;
+
+  // Checkins count
+  const currentQuarter = getCurrentQuarter(cycle).quarter;
+  const checkinsCount = analytics?.checkinCount || 0;
+  const checkinRate = analytics?.checkinRate || 0;
 
   // Department aggregation
   const deptStats = {};
@@ -88,8 +93,8 @@ export const AdminDashboard = () => {
               <span className="material-symbols-outlined">send</span>
             </div>
           </div>
-          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{Math.round(submissionRate)}%</h3>
-          <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Goal Submission</p>
+          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{submittedSheets.length}</h3>
+          <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Goals Submitted</p>
           <div className="h-1.5 w-full bg-surface-variant rounded-full mt-3 overflow-hidden">
             <div className="h-full bg-tertiary" style={{ width: `${submissionRate}%` }}></div>
           </div>
@@ -102,7 +107,7 @@ export const AdminDashboard = () => {
               <span className="material-symbols-outlined">verified</span>
             </div>
           </div>
-          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{Math.round(approvalRate)}%</h3>
+          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{lockedSheets.length}</h3>
           <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Manager Approval</p>
           <div className="h-1.5 w-full bg-surface-variant rounded-full mt-3 overflow-hidden">
             <div className="h-full bg-success" style={{ width: `${approvalRate}%` }}></div>
@@ -116,8 +121,9 @@ export const AdminDashboard = () => {
               <span className="material-symbols-outlined">fact_check</span>
             </div>
           </div>
-          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{Math.round(checkinRate)}%</h3>
-          <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Q{getCurrentQuarter(cycle).quarter} Check-ins</p><div className="h-1.5 w-full bg-surface-variant rounded-full mt-3 overflow-hidden">
+          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{checkinsCount}</h3>
+          <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Q{currentQuarter} Check-ins</p>
+          <div className="h-1.5 w-full bg-surface-variant rounded-full mt-3 overflow-hidden">
             <div className="h-full bg-warning" style={{ width: `${checkinRate}%` }}></div>
           </div>
         </div>

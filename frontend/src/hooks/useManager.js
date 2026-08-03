@@ -13,7 +13,7 @@ export const useTeamMembers = (cycleId) => {
       const { team = [], sheets = [] } = data;
       return team.map(member => {
         const sheet = sheets.find(s => s.employee_id === member.id) || null;
-        return { ...member, goalSheet: sheet, totalWeightage: 0 };
+        return { ...member, goalSheet: sheet, totalWeightage: sheet ? sheet.totalWeightage : 0 };
       });
     }
   });

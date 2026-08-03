@@ -83,10 +83,13 @@ export const getTeamSheets = asyncHandler(async (req, res) => {
   const { data: cycle } = await supabase
     .from('cycles').select('id').eq('is_active', true).single()
 
-  const { data: team } = await supabase
-    .from('profiles')
-    .select('id, full_name, email, department')
-    .eq('manager_id', req.user.id)
+  let teamQuery = supabase.from('profiles').select('id, full_name, email, department');
+  if (req.user.role === 'admin') {
+    teamQuery = teamQuery.eq('role', 'employee');
+  } else {
+    teamQuery = teamQuery.eq('manager_id', req.user.id);
+  }
+  const { data: team } = await teamQuery;
 
   const teamIds = team?.map(t => t.id) || []
 
@@ -96,5 +99,16 @@ export const getTeamSheets = asyncHandler(async (req, res) => {
     .eq('cycle_id', cycle.id)
     .in('employee_id', teamIds)
 
-  res.json({ success: true, data: { team, sheets } })
+  const sheetIds = sheets?.map(s => s.id) || [];
+  const { data: goals } = sheetIds.length 
+    ? await supabase.from('goals').select('sheet_id, weightage').in('sheet_id', sheetIds)
+    : { data: [] };
+
+  const sheetsWithWeightage = sheets?.map(sheet => {
+    const sheetGoals = goals?.filter(g => g.sheet_id === sheet.id) || [];
+    const totalWeightage = sheetGoals.reduce((sum, g) => sum + (Number(g.weightage) || 0), 0);
+    return { ...sheet, totalWeightage };
+  }) || [];
+
+  res.json({ success: true, data: { team, sheets: sheetsWithWeightage } })
 })

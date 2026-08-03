@@ -251,8 +251,9 @@ export const getReport = asyncHandler(async (req, res) => {
       })
       .filter(Boolean)
   );
+  const checkinCount = employeesWithComments.size;
   const checkinRate = employees.length > 0
-    ? (employeesWithComments.size / employees.length) * 100
+    ? (checkinCount / employees.length) * 100
     : 0;
 
   const radarData = quarterTrendData.map((item) => ({
@@ -275,6 +276,7 @@ export const getReport = asyncHandler(async (req, res) => {
         totalOnTrack,
         totalCompleted,
         checkinRate,
+        checkinCount,
         radarData
       }
     }

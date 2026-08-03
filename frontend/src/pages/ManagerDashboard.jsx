@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useActiveCycle } from '../hooks/useGoals';
-import { useTeamMembers } from '../hooks/useManager';
+import { useTeamMembers, useTeamCheckins } from '../hooks/useManager';
 import { getCurrentQuarter } from '../utils/achievementUtils';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
@@ -17,35 +17,13 @@ export const ManagerDashboard = () => {
 
   const { data: teamMembers, isLoading: teamLoading } = useTeamMembers(cycle?.id);
 
-  // Derive check-in count from team data returned by /sheets/team
-  const { data: checkinsData } = useQuery({
-    queryKey: ['managerCheckins', cycle?.id, quarter],
-    enabled: !!cycle?.id && !!profile?.id,
-    queryFn: async () => {
-      const { data } = await api.get('/sheets/team');
-      const { team = [], sheets = [] } = data;
-
-      // For each team member, check if they have achievements with manager_comment
-      // by fetching their goals and checking achievements for the current quarter
-      const teamIds = team.map(t => t.id);
-      if (!teamIds.length) return { checkedInCount: 0 };
-
-      // Count members whose sheets exist and have been reviewed (have a sheet)
-      // A full check-in count would need per-goal achievement data;
-      // approximate it as sheets with a manager_comment field set.
-      const checkedIn = sheets.filter(
-        s => teamIds.includes(s.employee_id) && s.manager_comment
-      ).length;
-
-      return { checkedInCount: checkedIn };
-    }
-  });
+  const { data: teamCheckins } = useTeamCheckins(cycle?.id, quarter);
 
   // Calculate stats
   const teamSize = teamMembers?.length || 0;
   const goalsSubmitted = teamMembers?.filter(m => m.goalSheet && m.goalSheet.status !== 'draft').length || 0;
   const goalsApproved = teamMembers?.filter(m => m.goalSheet && (m.goalSheet.status === 'locked' || m.goalSheet.status === 'approved')).length || 0;
-  const checkInsDone = checkinsData?.checkedInCount || 0;
+  const checkInsDone = teamCheckins?.filter(m => m.hasManagerComment).length || 0;
 
   // Get recent team activity
   const getStatusBadge = (status) => {

@@ -11,7 +11,8 @@ export const EmployeeAchievements = () => {
   const currentQuarterInfo = getCurrentQuarter(cycle);
   const quarter = currentQuarterInfo.quarter;
 
-  const { data: achievements, isLoading: achievementsLoading } = useQuarterAchievements(cycle?.id, quarter);
+  const goalIds = goals?.map(g => g.id) || [];
+  const { data: achievements, isLoading: achievementsLoading } = useQuarterAchievements(goalIds, quarter);
   const upsertAchievementMutation = useUpsertAchievementMutation();
 
   const [toastMessage, setToastMessage] = useState(null);
@@ -101,7 +102,7 @@ export const EmployeeAchievements = () => {
         goal_id: goal.id,
         quarter: quarter,
         cycle_id: cycle.id,
-        actual: goal.uom === 'zero' && data.isZero ? 0 : (goal.uom === 'timeline' ? null : (data.actual ? Number(data.actual) : null)),
+        actual: goal.uom === 'zero' && data.isZero ? 0 : (goal.uom === 'timeline' ? null : ((data.actual !== '' && data.actual !== null) ? Number(data.actual) : null)),
         actual_date: goal.uom === 'timeline' ? (data.actual_date || null) : null,
         status: data.status,
         employee_note: data.employee_note || null,
@@ -127,29 +128,7 @@ export const EmployeeAchievements = () => {
     const data = formData[goal.id];
     if (!data) return;
 
-    let score = 0;
-
-    if (goal.uom === 'zero') {
-      score = data.isZero ? 100 : 0;
-    } else if (goal.uom === 'timeline') {
-      if (data.actual_date && goal.target_date) {
-        const actualD = new Date(data.actual_date + 'T00:00:00');
-        const targetD = new Date(goal.target_date + 'T00:00:00');
-        score = actualD <= targetD ? 100 : 0;
-      }
-    } else if (goal.uom === 'numeric_min') {
-      const actual = parseFloat(data.actual);
-      const target = parseFloat(goal.target);
-      if (!isNaN(actual) && !isNaN(target) && target > 0) {
-        score = Math.min((actual / target) * 100, 150);
-      }
-    } else if (goal.uom === 'numeric_max') {
-      const actual = parseFloat(data.actual);
-      const target = parseFloat(goal.target);
-      if (!isNaN(actual) && !isNaN(target) && actual > 0) {
-        score = Math.min((target / actual) * 100, 150);
-      }
-    }
+    const score = calculateGoalScore(goal.uom, goal.target, goal.target_date, data.actual, data.actual_date, data.isZero);
 
     overallScore += (Number(goal.weightage) / 100) * score;
   });
