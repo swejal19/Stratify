@@ -1,34 +1,4 @@
----
-
 # 🎯 Stratify — Goal Setting & Tracking Portal
-### AtomQuest Hackathon 1.0 Submission
-
-[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org)
-[![Node.js](https://img.shields.io/badge/Node.js-22-green)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-4-black)](https://expressjs.com)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green)](https://supabase.com)
-[![Vercel](https://img.shields.io/badge/Frontend-Vercel-black)](https://vercel.com)
-[![Render](https://img.shields.io/badge/Backend-Render-purple)](https://render.com)
-
----
-
-## 🌐 Live Demo
-
-| Resource | URL |
-|----------|-----|
-| 🖥️ Frontend | https://your-app.vercel.app |
-| ⚙️ Backend API | https://your-backend.onrender.com |
-| 📋 API Health | https://your-backend.onrender.com/health |
-
-### Demo Credentials
-| Role | Email | Password |
-|------|-------|----------|
-| 👤 Employee | employee@demo.com | Employee@123 |
-| 👨💼 Manager | manager@demo.com | Manager@123 |
-| 🛡️ Admin | admin@demo.com | Admin@123 |
-
-> 💡 Use the Quick Demo Access cards on the login 
-> page to auto-fill credentials instantly.
 
 ---
 
@@ -487,12 +457,6 @@ ATOMQUEST/
 | Secrets | Environment variables only |
 | Admin Operations | Service Role Key server-side only |
 | API Security | JWT verified on every request |
-
-> Note: Supabase Row Level Security (RLS) policies 
-> were initially implemented but security is enforced 
-> at the API layer via Express middleware — the 
-> standard pattern for applications with a custom 
-> backend server.
 
 ---
 
