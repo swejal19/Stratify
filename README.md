@@ -412,7 +412,7 @@ Total = 109%
 ---
 
 ## 📁 Project Structure
-
+```text
 ATOMQUEST/
 ├── frontend/
 │ ├── src/
@@ -441,8 +441,7 @@ ATOMQUEST/
 │ ├── routes/ all route files
 │ └── utils/ scoreCalculator, asyncHandler
 └── server.js
-
-
+```
 ---
 
 ## 🔒 Security Notes
