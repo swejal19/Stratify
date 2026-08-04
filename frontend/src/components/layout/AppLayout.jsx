@@ -20,6 +20,7 @@ const NAV_CONFIG = {
     { label: 'Dashboard', path: '/admin', icon: 'dashboard' },
     { label: 'Cycle Management', path: '/admin/cycles', icon: 'calendar_month' },
     { label: 'User Management', path: '/admin/users', icon: 'groups' },
+    { label: 'Access Requests', path: '/admin/access-requests', icon: 'person_add' },
     { label: 'Reports', path: '/admin/reports', icon: 'description' },
     { label: 'Analytics', path: '/admin/analytics', icon: 'analytics' },
     { label: 'Audit Log', path: '/admin/audit', icon: 'security' }
@@ -47,8 +48,20 @@ export const AppLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [pendingRequests, setPendingRequests] = useState(0);
 
   const role = profile?.role || 'employee';
+  
+  React.useEffect(() => {
+    if (role === 'admin') {
+      import('../../lib/api').then(({ api }) => {
+        api.get('/admin/access-requests?status=pending')
+          .then(res => { if (res.success) setPendingRequests(res.data.length); })
+          .catch(() => {});
+      });
+    }
+  }, [role, location.pathname]);
+
   const navLinks = NAV_CONFIG[role] || [];
 
   // Determine dynamic page title from active link
@@ -112,6 +125,9 @@ export const AppLayout = ({ children }) => {
                   {link.icon}
                 </span>
                 {link.label}
+                {link.label === 'Access Requests' && pendingRequests > 0 && (
+                  <span className="ml-auto w-2 h-2 rounded-full bg-error animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                )}
               </Link>
             );
           })}

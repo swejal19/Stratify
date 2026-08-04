@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
-import { useAuditLogs } from '../../hooks/useAdmin';
+import React, { useState, useEffect } from 'react';
+import { api } from '../../lib/api';
 
 export const AdminAudit = () => {
-  const { data: logs, isLoading } = useAuditLogs();
+  const [logs, setLogs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [data, setData] = useState({ pagination: { total: 0, hasNext: false, hasPrev: false } });
+  const LIMIT = 20;
+
+  useEffect(() => {
+    const fetchLogs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await api.get(`/audit?page=${page}&limit=${LIMIT}`);
+        if (response.success) {
+          setLogs(response.data);
+          setTotalPages(response.pagination.totalPages);
+          setData(response);
+        }
+      } catch (err) {
+        console.error('Failed to fetch logs:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchLogs();
+  }, [page]);
 
   if (isLoading) {
     return (
@@ -115,6 +140,29 @@ export const AdminAudit = () => {
               )}
             </tbody>
           </table>
+        </div>
+        
+        <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+          <p className="text-sm text-on-surface-variant">
+            Page {page} of {totalPages} 
+            ({data.pagination.total} total entries)
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={!data.pagination.hasPrev}
+              className="px-4 py-2 rounded-lg bg-surface-variant text-on-surface disabled:opacity-40 hover:bg-white/10 transition-colors font-medium text-sm"
+            >
+              ← Previous
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+              disabled={!data.pagination.hasNext}
+              className="px-4 py-2 rounded-lg bg-surface-variant text-on-surface disabled:opacity-40 hover:bg-white/10 transition-colors font-medium text-sm"
+            >
+              Next →
+            </button>
+          </div>
         </div>
       </div>
 

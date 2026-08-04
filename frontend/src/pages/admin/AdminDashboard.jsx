@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useActiveCycle } from '../../hooks/useGoals';
 import { useAdminDashboardData } from '../../hooks/useAdmin';
 import { getCurrentQuarter } from '../../utils/achievementUtils';
 
 export const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { data: cycle, isLoading: cycleLoading } = useActiveCycle();
   const { data: dashboardData, isLoading: dataLoading } = useAdminDashboardData(cycle?.id);
 
@@ -17,7 +19,7 @@ export const AdminDashboard = () => {
     );
   }
 
-  const { employees, sheets, recentLogs, analytics } = dashboardData || {};
+  const { employees, sheets, recentLogs, analytics, pendingRequests } = dashboardData || {};
 
   // Calculate stats
   const totalEmployees = employees?.length || 0;
@@ -70,7 +72,7 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
 
         <div className="bg-surface-container p-6 rounded-2xl border border-outline relative overflow-hidden group">
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
@@ -126,6 +128,19 @@ export const AdminDashboard = () => {
           <div className="h-1.5 w-full bg-surface-variant rounded-full mt-3 overflow-hidden">
             <div className="h-full bg-warning" style={{ width: `${checkinRate}%` }}></div>
           </div>
+        </div>
+        <div 
+          onClick={() => navigate('/admin/access-requests')}
+          className="bg-surface-container p-6 rounded-2xl border border-outline relative overflow-hidden group cursor-pointer hover:border-warning/50 transition-colors"
+        >
+          <div className="absolute -right-4 -top-4 w-24 h-24 bg-warning/5 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+          <div className="flex justify-between items-start mb-4 relative z-10">
+            <div className="w-10 h-10 rounded-lg bg-warning/20 text-warning flex items-center justify-center">
+              <span className="material-symbols-outlined">person_add</span>
+            </div>
+          </div>
+          <h3 className="text-4xl font-mono font-bold text-slate-700 mb-1">{pendingRequests || 0}</h3>
+          <p className="text-slate-700-variant text-sm font-bold uppercase tracking-wider">Pending Requests</p>
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import { ToastProvider } from './context/ToastContext';
 import { ErrorBoundary } from './components/layout/ErrorBoundary';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { LoginPage } from './pages/LoginPage';
+import { RequestAccessPage } from './pages/RequestAccessPage';
 import { EmployeeDashboard } from './pages/EmployeeDashboard';
 import { EmployeeAchievements } from './pages/EmployeeAchievements';
 import { EmployeeProgress } from './pages/EmployeeProgress';
@@ -19,6 +20,7 @@ import { AdminUsers } from './pages/admin/AdminUsers';
 import { AdminReports } from './pages/admin/AdminReports';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminAudit } from './pages/admin/AdminAudit';
+import { AdminAccessRequests } from './pages/admin/AdminAccessRequests';
 import { LandingPage } from './pages/LandingPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { AppLayout } from './components/layout/AppLayout';
@@ -32,6 +34,7 @@ function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/request-access" element={<RequestAccessPage />} />
 
               {/* Employee Routes */}
               <Route
@@ -82,6 +85,7 @@ function App() {
                         <Route path="/reports" element={<AdminReports />} />
                         <Route path="/analytics" element={<AdminAnalytics />} />
                         <Route path="/audit" element={<AdminAudit />} />
+                        <Route path="/access-requests" element={<AdminAccessRequests />} />
                         <Route path="*" element={<NotFoundPage />} />
                       </Routes>
                     </AppLayout>

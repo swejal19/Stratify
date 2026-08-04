@@ -298,9 +298,18 @@ export const LoginPage = () => {
               </div>
             )}
 
-            <p className="text-center text-xs text-slate-400 mt-4">
-              Account issues? Contact your system administrator.
-            </p>
+            <div className="flex flex-col items-center gap-2 mt-5">
+              <button
+                type="button"
+                onClick={() => navigate('/request-access')}
+                className="text-sm text-primary hover:text-secondary font-bold transition-colors"
+              >
+                Don't have an account? Request Access &rarr;
+              </button>
+              <p className="text-xs text-slate-400">
+                Account issues? Contact your system administrator.
+              </p>
+            </div>
           </form>
 
         </div>

@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useAllProfiles, useUpdateProfileMutation, useAdminUnlockGoalsMutation } from '../../hooks/useAdmin';
 import { PushGoalModal } from '../../components/shared/PushGoalModal';
 import { api } from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
 
 export const AdminUsers = () => {
+  const { profile } = useAuth();
   const { data: profiles, isLoading } = useAllProfiles();
   const updateProfileMutation = useUpdateProfileMutation();
   const unlockGoalsMutation = useAdminUnlockGoalsMutation();
@@ -92,6 +94,29 @@ export const AdminUsers = () => {
       }
     }
   };
+
+  const handleDeleteUser = async (userId, userName) => {
+    if (!confirm(`Are you sure you want to permanently delete ${userName} and ALL their data? This cannot be undone.`)) return
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/${userId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('stratify_token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      const data = await response.json()
+      if (!data.success) throw new Error(data.message)
+      showToast(`${userName} deleted successfully`)
+      window.location.reload()
+    } catch (err) {
+      alert(err.message || 'Failed to delete user')
+    }
+  }
 
   const handleCreateUser = async () => {
 
@@ -272,6 +297,14 @@ export const AdminUsers = () => {
                         >
                           Edit
                         </button>
+                        {user.role !== 'admin' && user.id !== profile?.id && (
+                          <button
+                            onClick={() => handleDeleteUser(user.id, user.full_name)}
+                            className="px-3 py-1.5 rounded bg-error/10 text-error hover:bg-error/20 font-bold text-xs transition-colors"
+                          >
+                            Delete
+                          </button>
+                        )}
                       </td>
                     </tr>
                   )

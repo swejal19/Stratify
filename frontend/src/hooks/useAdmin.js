@@ -8,11 +8,12 @@ export const useAdminDashboardData = (cycleId) => {
     enabled: !!cycleId,
     queryFn: async () => {
       // Fetch all users and team sheets in parallel
-      const [usersRes, sheetsRes, auditRes, reportsRes] = await Promise.all([
+      const [usersRes, sheetsRes, auditRes, reportsRes, accessReqRes] = await Promise.all([
         api.get('/users'),
         api.get('/sheets/team'),
         api.get('/audit'),
-        api.get(`/reports?cycle_id=${cycleId}`)
+        api.get(`/reports?cycle_id=${cycleId}`),
+        api.get('/admin/access-requests?status=pending')
       ]);
 
       const profiles = usersRes.data || [];
@@ -21,8 +22,9 @@ export const useAdminDashboardData = (cycleId) => {
       const recentLogs = (auditRes.data || []).slice(0, 10);
       const reports = reportsRes.data?.reports || [];
       const analytics = reportsRes.data?.analytics || {};
+      const pendingRequests = accessReqRes.data?.length || 0;
 
-      return { profiles, employees, sheets, recentLogs, reports, analytics };
+      return { profiles, employees, sheets, recentLogs, reports, analytics, pendingRequests };
     }
   });
 };

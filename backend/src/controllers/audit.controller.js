@@ -3,34 +3,33 @@ import { asyncHandler } from '../utils/asyncHandler.js'
 
 // GET /api/audit (admin only)
 export const getAuditLogs = asyncHandler(async (req, res) => {
-  const { data: logs, error } = await supabase
+  const page = parseInt(req.query.page) || 1
+  const limit = parseInt(req.query.limit) || 20
+  const offset = (page - 1) * limit
+
+  const { data, error, count } = await supabase
     .from('audit_logs')
-    .select('*')
+    .select('*, profiles:changed_by(full_name)', { count: 'exact' })
     .order('created_at', { ascending: false })
-    .limit(100)
+    .range(offset, offset + limit - 1)
 
-  if (error) return res.status(400).json({ success: false, message: error.message })
-
-  const userIds = [...new Set(logs?.map(log => log.changed_by).filter(Boolean) || [])]
-  
-  let profilesMap = {}
-  if (userIds.length > 0) {
-    const { data: profiles } = await supabase
-      .from('profiles')
-      .select('id, full_name')
-      .in('id', userIds)
-      
-    if (profiles) {
-      profiles.forEach(p => {
-        profilesMap[p.id] = p
-      })
-    }
+  if (error) {
+    return res.status(400).json({ 
+      success: false, 
+      message: error.message 
+    })
   }
 
-  const enrichedLogs = (logs || []).map(log => ({
-    ...log,
-    profiles: log.changed_by ? profilesMap[log.changed_by] : null
-  }))
-
-  res.json({ success: true, data: enrichedLogs })
+  res.json({
+    success: true,
+    data,
+    pagination: {
+      page,
+      limit,
+      total: count,
+      totalPages: Math.ceil(count / limit),
+      hasNext: page < Math.ceil(count / limit),
+      hasPrev: page > 1
+    }
+  })
 })
